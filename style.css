@@ -1,0 +1,476 @@
+:root {
+  --background-color: rgb(220, 220, 220);
+  --color-shadow: rgb(36, 32, 32);
+  --bg-container-day: deepskyblue;
+  --bg-container-night: rgb(50, 53, 62);
+  --bg-container-cloudiness: rgb(100, 195, 229);
+  --color-variable-navigation: whitesmoke;
+  --color-paremetr-city: rgb(204, 221, 247);
+  --sun-color-first: rgb(247, 86, 32);
+  --sun-color-second: rgb(246, 246, 179);
+  --moon-color-light: rgb(231, 234, 251);
+  --moon-color-dark: rgb(0, 0, 0);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Noto Sans Symbols 2', sans-serif;
+}
+
+html {
+  font-size: 0.5208333333vw;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-main {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+  /* max-width: 98%; */
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.controler {
+  display: flex;
+  /* width: 20vw; */
+  height: 100%;
+  /* align-items: center;
+  justify-content: center; */
+  background-color: lightsteelblue;
+  /* border-radius: 2vw; */
+  left: 0;
+  right: auto;
+  margin: 0;
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 20vw;
+  font-size: 2rem;
+}
+
+.container-input,
+.select {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.row-checkbox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-get-weather {
+  width: 100%;
+  height: 3vw;
+  background: linear-gradient(rgb(202, 241, 254), deepskyblue);
+  padding: 10px;
+  border-radius: 5px;
+  border-style: none;
+  align-items: center;
+  text-align: center;
+}
+
+.button-get-weather:hover {
+  background: deepskyblue;
+  cursor: pointer;
+}
+
+.button-enter-city {
+  border-radius: 10px;
+  border: none;
+  font-size: 3rem;
+  background-color: deepskyblue;
+  color: yellow;
+  box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+}
+
+.container-widgets {
+  position: relative;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+}
+.container-widgets_color-day {
+  background-color: var(--bg-container-day);
+  box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+}
+.container-widgets_color-night {
+  background-color: var(--bg-container-night);
+  box-shadow: 1vw -1vw 2vw 0vw var(--color-shadow);
+}
+.container-widgets_color-cloudiness {
+  background-color: var(--bg-container-cloudiness);
+  box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+}
+.container-widgets__container-day,
+.container-widgets__container-night,
+.container-widgets__container-cloudiness {
+  margin-top: 2vw;
+  display: flex;
+  gap: 2vw;
+}
+.container-widgets_color-moon {
+  position: relative;
+  background-image: linear-gradient(
+    45deg,
+    var(--moon-color-light),
+    var(--moon-color-dark)
+  );
+  box-shadow: 10px -10px 10px 0px var(--color-shadow);
+}
+.container-widgets_color-sun {
+  background-image: linear-gradient(
+    45deg,
+    var(--sun-color-first),
+    var(--sun-color-second)
+  );
+  box-shadow: 0px 0px 15px 10px rgb(249, 215, 153);
+}
+.container-widgets__shine {
+  animation: shine;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+figure {
+  margin: 0px;
+}
+
+.detail-info-day {
+  background-color: var(--bg-container-day);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+
+.detail-info-night {
+  background-color: var(--bg-container-night);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+
+.detail-info-cloudiness {
+  background-color: var(--bg-container-cloudiness);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+
+.container-day__big-section,
+.container-night__big-section,
+.container-cloudiness__big-section {
+  width: 22vw;
+  border-radius: 1.5vw;
+}
+.container-day__small-section,
+.container-night__small-section,
+.container-cloudiness__small-section {
+  position: relative;
+  width: 22vw;
+  height: -moz-max-content;
+  height: max-content;
+  border-radius: 1.5vw;
+}
+.container-day__figure-big,
+.container-night__figure-big,
+.container-cloudiness__figure-big {
+  width: 12vw;
+  height: 12vw;
+  margin: 3vw auto;
+  border-radius: 50%;
+}
+.container-day__figure-small,
+.container-night__figure-small,
+.container-cloudiness__figure-small {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+}
+.container-day__temperature-curent,
+.container-night__temperature-curent,
+.container-cloudiness__temperature-curent {
+  display: block;
+  text-align: center;
+  margin-top: 2vw;
+  font-size: 6rem;
+  font-weight: bolder;
+  color: var(--color-variable-navigation);
+}
+.container-day__city-curent,
+.container-night__city-curent,
+.container-cloudiness__city-curent {
+  display: block;
+  text-align: center;
+  margin-top: 1vw;
+  font-size: 4rem;
+  font-weight: 500;
+  color: var(--color-paremetr-city);
+}
+.container-day__parametrs,
+.container-night__parametrs,
+.container-cloudiness__parametrs {
+  display: flex;
+  margin-top: 6vw;
+  justify-content: space-around;
+  color: var(--color-paremetr-city);
+  font-size: 2.5rem;
+}
+.container-day__value-measurement,
+.container-day__curent-time-of-day,
+.container-night__value-measurement,
+.container-night__curent-time-of-day,
+.container-cloudiness__value-measurement,
+.container-cloudiness__curent-time-of-day {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1vw 0;
+  color: var(--color-variable-navigation);
+  font-size: 4rem;
+}
+.container-day__units-measurement,
+.container-night__units-measurement,
+.container-cloudiness__units-measurement {
+  font-size: 2.5rem;
+}
+.container-day__button,
+.container-night__button,
+.container-cloudiness__button {
+  display: block;
+  border: none;
+  margin: 1vw auto;
+  font-size: 2.5rem;
+}
+
+.container-day_color-btn-day {
+  background-color: var(--bg-container-day);
+  color: var(--color-paremetr-city);
+}
+
+.container-night_color-btn-night {
+  background-color: var(--bg-container-night);
+  color: var(--color-paremetr-city);
+}
+.container-night__satellite {
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  background: linear-gradient(
+    to right,
+    var(--moon-color-light),
+    var(--moon-color-dark)
+  );
+  animation: move;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.container-cloudiness__big-section {
+  position: relative;
+}
+.container-cloudiness_color-btn-cloudiness {
+  background-color: var(--bg-container-cloudiness);
+  color: var(--color-paremetr-city);
+}
+
+#cloud {
+  position: absolute;
+  top: -15vw;
+  right: -12vw;
+  opacity: 0.7;
+  background: rgb(255, 255, 255);
+  width: 10vw;
+  height: 4vw;
+  border-radius: 3vw;
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+#cloud:after {
+  content: '';
+  background: rgb(235, 255, 255);
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  top: -1vw;
+  left: 1vw;
+}
+
+#cloud:before {
+  content: '';
+  background: rgb(255, 255, 255);
+  position: absolute;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  top: -2.5vw;
+  right: 3vw;
+}
+
+.center {
+  position: absolute;
+}
+
+@keyframes shine {
+  from {
+    box-shadow: 0px 0px 10px -5px var(--sun-color-second);
+  }
+  to {
+    box-shadow: 0px 0px 20px 10px var(--sun-color-second);
+  }
+}
+@keyframes move {
+  0% {
+    transform: rotate(0deg);
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+  40% {
+    transform: rotate(0deg);
+    left: 10vw;
+    top: 0vw;
+  }
+  50% {
+    transform: rotate(-180deg);
+    opacity: 0;
+    left: 10vw;
+    top: 0vw;
+  }
+  90% {
+    transform: rotate(180deg);
+    opacity: 0;
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+  100% {
+    transform: rotate(0deg);
+    opacity: 1;
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+}
+@media screen and (max-width: 1366px) {
+  html {
+    font-size: 0.7320644217vw;
+  }
+  body {
+    background-color: var(--background-color);
+  }
+  .container-widgets__container-day,
+  .container-widgets__container-night,
+  .container-widgets__container-cloudiness {
+    flex-direction: column;
+  }
+  .container-day__big-section,
+  .container-day__small-section,
+  .container-night__big-section,
+  .container-night__small-section,
+  .container-cloudiness__big-section,
+  .container-cloudiness__small-section {
+    min-width: 30vw;
+  }
+  .container-day__figure-big,
+  .container-night__figure-big,
+  .container-cloudiness__figure-big {
+    width: 13vw;
+    height: 13vw;
+    margin: 4vw auto;
+  }
+  .container-day__parametrs,
+  .container-night__parametrs,
+  .container-cloudiness__parametrs {
+    margin-top: 10vw;
+  }
+  .container-day__temperature-curent,
+  .container-night__temperature-curent,
+  .container-cloudiness__temperature-curent {
+    margin-top: 3vw;
+  }
+  #cloud {
+    top: -18vw;
+  }
+}
+@media screen and (max-width: 512px) {
+  html {
+    font-size: 2.5641025641vw;
+  }
+  body {
+    background-color: var(--background-color);
+  }
+  .container-widgets {
+    display: flex;
+    height: -moz-fit-content;
+    height: fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container-day__big-section,
+  .container-day__small-section,
+  .container-night__big-section,
+  .container-night__small-section,
+  .container-cloudiness__big-section,
+  .container-cloudiness__small-section {
+    min-width: 90vw;
+    border-radius: 5vw;
+    margin-top: 5vw;
+  }
+  .container-day__figure-big,
+  .container-night__figure-big,
+  .container-cloudiness__figure-big {
+    width: 50vw;
+    height: 50vw;
+    margin: 10vw auto;
+  }
+  .container-day__figure-small,
+  .container-night__figure-small,
+  .container-cloudiness__figure-small {
+    width: 15vw;
+    height: 15vw;
+  }
+  .container-day__parametrs,
+  .container-night__parametrs,
+  .container-cloudiness__parametrs {
+    margin-top: 40vw;
+  }
+  .container-day__temperature-curent,
+  .container-night__temperature-curent,
+  .container-cloudiness__temperature-curent {
+    margin-top: 5vw;
+  }
+  .container-day__button,
+  .container-night__button,
+  .container-cloudiness__button {
+    margin: 7vw auto;
+  }
+  .container-day__curent-time-of-day,
+  .container-night__curent-time-of-day,
+  .container-cloudiness__curent-time-of-day {
+    margin: 5vw auto;
+  }
+  .container-day__value-measurement,
+  .container-night__value-measurement,
+  .container-cloudiness__value-measurement {
+    margin: 5vw auto;
+  }
+  #cloud {
+    top: -18v;
+  }
+} /*# sourceMappingURL=style.css.map */

@@ -1,0 +1,426 @@
+:root {
+  --background-color: rgb(220, 220, 220);
+  --color-shadow: rgb(36, 32, 32);
+
+  --bg-container-day: deepskyblue;
+  --bg-container-night: rgb(50, 53, 62);
+  --bg-container-cloudiness: rgb(100, 195, 229);
+
+  --color-variable-navigation: whitesmoke;
+  --color-paremetr-city: rgb(204, 221, 247);
+
+  --sun-color-first: rgb(247, 86, 32);
+  --sun-color-second: rgb(246, 246, 179);
+
+  --moon-color-light: rgb(231, 234, 251);
+  --moon-color-dark: rgb(0, 0, 0);
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  font-size: calc(100vw / 1920 * 10);
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-main {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+  max-width: 98%;
+  width: 100vw;
+}
+.controler {
+  display: flex;
+  width: 20vw;
+  height: 25vw;
+  align-items: center;
+  justify-content: center;
+  background-color: lightsteelblue;
+  border-radius: 2vw;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 20vw;
+  font-size: 2rem;
+}
+
+.container-input,
+.select,
+.save-widget {
+  background-color: lightsteelblue;
+  color: aqua;
+  border: none;
+}
+
+.button-get-weather {
+  width: 18vw;
+  height: 3vw;
+}
+
+.button-enter-city,
+.button-get-weather {
+  border-radius: 10px;
+  border: none;
+  font-size: 3rem;
+  background-color: deepskyblue;
+  color: yellow;
+  box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+}
+.container-widgets {
+  position: relative;
+  // height: 100vh;
+  flex-wrap: wrap;
+
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  gap: 2vw;
+
+  &_color-day {
+    background-color: var(--bg-container-day);
+    box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+  }
+  &_color-night {
+    background-color: var(--bg-container-night);
+    box-shadow: 1vw -1vw 2vw 0vw var(--color-shadow);
+  }
+  &_color-cloudiness {
+    background-color: var(--bg-container-cloudiness);
+    box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
+  }
+
+  &__container-day,
+  &__container-night,
+  &__container-cloudiness {
+    margin-top: 2vw;
+    display: flex;
+    gap: 2vw;
+  }
+  &_color-moon {
+    position: relative;
+    background-image: linear-gradient(
+      45deg,
+      var(--moon-color-light),
+      var(--moon-color-dark)
+    );
+    box-shadow: 10px -10px 10px 0px var(--color-shadow);
+  }
+  &_color-sun {
+    background-image: linear-gradient(
+      45deg,
+      var(--sun-color-first),
+      var(--sun-color-second)
+    );
+    box-shadow: 0px 0px 15px 10px rgb(249, 215, 153);
+  }
+  &__shine {
+    animation: shine;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+}
+figure {
+  margin: 0px;
+}
+.detail-info-day {
+  background-color: var(--bg-container-day);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+.detail-info-night {
+  background-color: var(--bg-container-night);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+.detail-info-cloudiness {
+  background-color: var(--bg-container-cloudiness);
+  color: var(--color-variable-navigation);
+  border: none;
+}
+
+.container-day,
+.container-night,
+.container-cloudiness {
+  &__big-section {
+    width: 22vw;
+    // min-width: fit-content;
+    // ?????
+    border-radius: 1.5vw;
+  }
+  &__small-section {
+    position: relative;
+    width: 22vw;
+    height: max-content;
+    border-radius: 1.5vw;
+  }
+  &__figure-big {
+    width: 12vw;
+    height: 12vw;
+    margin: 3vw auto;
+    border-radius: 50%;
+  }
+  &__figure-small {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+  }
+
+  &__temperature-curent {
+    display: block;
+    text-align: center;
+    margin-top: 2vw;
+    font-size: 6rem;
+    font-weight: bolder;
+    color: var(--color-variable-navigation);
+  }
+  &__city-curent {
+    display: block;
+    text-align: center;
+    margin-top: 1vw;
+    font-size: 4rem;
+    font-weight: 500;
+    color: var(--color-paremetr-city);
+  }
+  &__parametrs {
+    display: flex;
+    margin-top: 6vw;
+    justify-content: space-around;
+    color: var(--color-paremetr-city);
+    font-size: 2.5rem;
+  }
+  &__value-measurement,
+  &__curent-time-of-day {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1vw 0;
+    color: var(--color-variable-navigation);
+    font-size: 4rem;
+  }
+  &__units-measurement {
+    font-size: 2.5rem;
+  }
+  &__button {
+    display: block;
+    border: none;
+    margin: 1vw auto;
+    font-size: 2.5rem;
+  }
+}
+.container-day {
+  &_color-btn-day {
+    background-color: var(--bg-container-day);
+    color: var(--color-paremetr-city);
+  }
+}
+.container-night {
+  &_color-btn-night {
+    background-color: var(--bg-container-night);
+    color: var(--color-paremetr-city);
+  }
+
+  &__satellite {
+    position: absolute;
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    background: linear-gradient(
+      to right,
+      var(--moon-color-light),
+      var(--moon-color-dark)
+    );
+
+    animation: move;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
+.container-cloudiness {
+  &__big-section {
+    position: relative;
+  }
+  &_color-btn-cloudiness {
+    background-color: var(--bg-container-cloudiness);
+    color: var(--color-paremetr-city);
+  }
+}
+//
+#cloud {
+  position: absolute;
+  top: -15vw;
+  right: -12vw;
+  opacity: 0.7;
+  background: rgba(255, 255, 255);
+  width: 10vw;
+  height: 4vw;
+  border-radius: 3vw;
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+#cloud:after {
+  content: '';
+  background: rgba(235, 255, 255);
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  top: -1vw;
+  left: 1vw;
+}
+#cloud:before {
+  content: '';
+  background: rgba(255, 255, 255);
+  position: absolute;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  top: -2.5vw;
+  right: 3vw;
+}
+.center {
+  position: absolute;
+}
+
+//
+@keyframes shine {
+  from {
+    box-shadow: 0px 0px 10px -5px var(--sun-color-second);
+  }
+  to {
+    box-shadow: 0px 0px 20px 10px var(--sun-color-second);
+  }
+}
+@keyframes move {
+  0% {
+    transform: rotate(0deg);
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+  40% {
+    transform: rotate(0deg);
+    left: 10vw;
+    top: 0vw;
+  }
+  50% {
+    transform: rotate(-180deg);
+    opacity: 0;
+    left: 10vw;
+    top: 0vw;
+  }
+  90% {
+    transform: rotate(180deg);
+    opacity: 0;
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+  100% {
+    transform: rotate(0deg);
+    opacity: 1;
+    left: -0.5vw;
+    top: 9.5vw;
+  }
+}
+// For tablet iPad_Pro.
+@media screen and (max-width: 1366px) {
+  html {
+    font-size: calc(100vw / 1366 * 10);
+  }
+  body {
+    background-color: var(--background-color);
+  }
+  .container-widgets {
+    // max-width: 100%;
+    // align-items: flex-start;
+    // height: 100vh;
+    &__container-day,
+    &__container-night,
+    &__container-cloudiness {
+      flex-direction: column;
+    }
+  }
+  .container-day,
+  .container-night,
+  .container-cloudiness {
+    &__big-section,
+    &__small-section {
+      min-width: 30vw;
+    }
+    &__figure-big {
+      width: 13vw;
+      height: 13vw;
+      margin: 4vw auto;
+    }
+    &__parametrs {
+      margin-top: 10vw;
+    }
+    &__temperature-curent {
+      margin-top: 3vw;
+    }
+  }
+  #cloud {
+    top: -18vw;
+  }
+}
+
+// For iFone 12_pro
+@media screen and (max-width: 512px) {
+  html {
+    font-size: calc(100vw / 390 * 10);
+  }
+  body {
+    background-color: var(--background-color);
+  }
+  .container-widgets {
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container-day,
+  .container-night,
+  .container-cloudiness {
+    &__big-section,
+    &__small-section {
+      min-width: 90vw;
+      border-radius: 5vw;
+      margin-top: 5vw;
+    }
+    &__figure-big {
+      width: 50vw;
+      height: 50vw;
+      margin: 10vw auto;
+    }
+    &__figure-small {
+      width: 15vw;
+      height: 15vw;
+    }
+    &__parametrs {
+      margin-top: 40vw;
+    }
+    &__temperature-curent {
+      margin-top: 5vw;
+    }
+    &__button {
+      margin: 7vw auto;
+    }
+    &__curent-time-of-day {
+      margin: 5vw auto;
+    }
+    &__value-measurement {
+      margin: 5vw auto;
+    }
+  }
+  #cloud {
+    top: -18v;
+  }
+}
