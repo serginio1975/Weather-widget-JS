@@ -57,10 +57,18 @@ function render() {
 
 document
   .querySelector('.button-get-weather')
-  .addEventListener('click', myClick);
+  .addEventListener('click', myClick1);
 
-function myClick() {
-  let input = document.querySelector('.container-input').value;
+function myClick1() {
+  let input1 = document.querySelector('.container-input').value;
+  console.log(input1);
+}
+//
 
-  console.log(input);
+document
+  .querySelector('.button-get-weather')
+  .addEventListener('click', myClick2);
+function myClick2() {
+  let input2 = document.querySelector('.select').value;
+  console.log(input2);
 }
