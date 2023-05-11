@@ -17,6 +17,7 @@
 }
 * {
   box-sizing: border-box;
+  font-family: 'Noto Sans Symbols 2', sans-serif;
 }
 html {
   font-size: calc(100vw / 1920 * 10);
@@ -31,17 +32,27 @@ body {
   align-items: center;
   height: 100vh;
   background-color: var(--background-color);
-  max-width: 98%;
   width: 100vw;
+  margin: 0;
+  padding: 0;
+
+  animation: gradient;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 .controler {
   display: flex;
-  width: 20vw;
-  height: 25vw;
-  align-items: center;
-  justify-content: center;
+  // width: 20vw;
+  height: 100%;
+  // align-items: center;
+  // justify-content: center;
   background-color: lightsteelblue;
-  border-radius: 2vw;
+  // border-radius: 2vw;
+  left: 0;
+  right: auto;
+  margin: 0;
+  padding: 20px;
 }
 
 .form {
@@ -50,23 +61,53 @@ body {
   justify-content: space-around;
   height: 20vw;
   font-size: 2rem;
+  font-weight: 900;
 }
+
+.select {
+  visibility: hidden;
+}
+.select {
+  // display: none;
+}
+
+.container-input:focus + .select {
+  visibility: visible;
+  // display: initial;
+}
+// .container-input:hover + .select {
+// visibility: visible;
+// }
 
 .container-input,
-.select,
-.save-widget {
-  background-color: lightsteelblue;
-  color: aqua;
+.select {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border: none;
+  padding: 5px;
+  border-radius: 3px;
+}
+.row-checkbox {
+  display: flex;
+  justify-content: space-between;
 }
 
 .button-get-weather {
-  width: 18vw;
+  width: 100%;
   height: 3vw;
+  background: linear-gradient(rgb(202, 241, 254), deepskyblue);
+  padding: 10px;
+  border-radius: 5px;
+  border-style: none;
+  align-items: center;
+  text-align: center;
+}
+.button-get-weather:hover {
+  background: deepskyblue;
+  cursor: pointer;
 }
 
-.button-enter-city,
-.button-get-weather {
+.button-enter-city {
   border-radius: 10px;
   border: none;
   font-size: 3rem;
@@ -76,12 +117,9 @@ body {
 }
 .container-widgets {
   position: relative;
-  // height: 100vh;
   flex-wrap: wrap;
-
   display: flex;
   justify-content: center;
-  // align-items: center;
   gap: 2vw;
 
   &_color-day {
@@ -291,6 +329,14 @@ figure {
 }
 
 //
+@keyframes gradient {
+  0% {
+    background: linear-gradient(rgb(248, 250, 250), rgb(164, 226, 247));
+  }
+  100% {
+    background: linear-gradient(rgb(246, 247, 247), rgb(243, 247, 180));
+  }
+}
 @keyframes shine {
   from {
     box-shadow: 0px 0px 10px -5px var(--sun-color-second);
@@ -335,7 +381,7 @@ figure {
     font-size: calc(100vw / 1366 * 10);
   }
   body {
-    background-color: var(--background-color);
+    // background-color: var(--background-color);
   }
   .container-widgets {
     // max-width: 100%;

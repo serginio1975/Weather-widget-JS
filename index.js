@@ -1,10 +1,7 @@
 const buttonGetWeather = document.getElementById('controler-submit');
-const buttonGetDetails = document.getElementById('button-2');
 const widgets = document.getElementById('container-widgets');
 
 buttonGetWeather.addEventListener('click', handleSubmit);
-// buttonGetDetails.addEventListener('click', handleClick);
-console.log('widgets ', widgets);
 
 let selectCity = [
   {
@@ -25,14 +22,14 @@ let selectCity = [
 function handleSubmit(event) {
   event.preventDefault();
 
-  console.log('button-1 clicked');
+  console.log('button-get-weather: clicked');
   render();
 }
 
-function handleClick(event) {
-  event.preventDefault();
-  console.log('click');
-}
+// function handleClick(event) {
+// event.preventDefault();
+// console.log('click');
+// }
 
 function render() {
   const renderHTML = ` 
@@ -54,4 +51,16 @@ function render() {
     </div>
 `;
   widgets.innerHTML += renderHTML;
+}
+
+//
+
+document
+  .querySelector('.button-get-weather')
+  .addEventListener('click', myClick);
+
+function myClick() {
+  let input = document.querySelector('.container-input').value;
+
+  console.log(input);
 }

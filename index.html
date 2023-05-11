@@ -23,22 +23,26 @@
     <!-- Controler -->
     <div class="container-main">
       <div class="controler">
-        <form class="form" action="" >
-          <input type="text" class="container-input" name="city" placeholder="Enter city"  value="" /> 
-          <select  class="select" name="select-city" id="" hidden>
-            <option >Select city</option>
-            <option value="Kyiv">Kyiv</option>
-            <option value="Kharkiv">Kharkiv</option>
-            <option value="Lviv">Lviv</option>
-          </select>
-          <input type="date" class="container-input controler-date" placeholder="Select date">
-        <div class="row-checkbox">  
+      <form class="form" action="" >
+
+        
+        <input type="text" class="container-input" name="city" placeholder="Enter city"  value="" id="text"/> 
+           <select  class="select" name="select-city" id="">
+             <!-- ????? -->
+             <option >Select city</option>
+             <option value="Kyiv">Kyiv</option>
+             <option value="Kharkiv">Kharkiv</option>
+             <option value="Lviv">Lviv</option>
+           </select>
+      
+        <!-- <input type="date" class="container-input controler-date" placeholder="Select date"> -->
+         <div class="row-checkbox">  
           <label class="" for="save">Save widget</label>
           <input type="checkbox" class=" container-input "  name="save"/>
          </div>
 
-          <button type="submit" class="button-get-weather" id="controler-submit">Get weather</button>
-        </form>
+        <button type="submit" class="button-get-weather" id="controler-submit">Get weather</button>
+      </form>
       
     </div>
       <div class="container-widgets" id="container-widgets"></div>
