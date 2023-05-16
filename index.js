@@ -1,9 +1,13 @@
 const buttonGetWeather = document.getElementById('controler-submit');
 const widgets = document.getElementById('container-widgets');
 
-buttonGetWeather.addEventListener('click', handleSubmit);
+let cityInput = document.querySelector('.container-input');
+const citySelect = document.querySelector('.select');
 
-let selectCity = [
+buttonGetWeather.addEventListener('click', handleSubmit);
+citySelect.addEventListener('change', selectCity);
+
+let select_City = [
   {
     city: 'Kyiv',
     index: 1322343,
@@ -19,17 +23,18 @@ let selectCity = [
   },
 ];
 
+function selectCity(event) {
+  console.log('event.target.value', event.target.value); //kiev
+  // event.target.value = cityInput.value;
+  cityInput.value = event.target.value;
+}
+
 function handleSubmit(event) {
   event.preventDefault();
 
   console.log('button-get-weather: clicked');
   render();
 }
-
-// function handleClick(event) {
-// event.preventDefault();
-// console.log('click');
-// }
 
 function render() {
   const renderHTML = ` 
@@ -53,22 +58,16 @@ function render() {
   widgets.innerHTML += renderHTML;
 }
 
+// function myClick1() {
+//   let enterCity = document.querySelector('.container-input').value;
+//   console.log(enterCity);
+// }
 //
 
-document
-  .querySelector('.button-get-weather')
-  .addEventListener('click', myClick1);
-
-function myClick1() {
-  let input1 = document.querySelector('.container-input').value;
-  console.log(input1);
-}
-//
-
-document
-  .querySelector('.button-get-weather')
-  .addEventListener('click', myClick2);
-function myClick2() {
-  let input2 = document.querySelector('.select').value;
-  console.log(input2);
-}
+// document
+//   .querySelector('.button-get-weather')
+//   .addEventListener('click', myClick2);
+// function myClick2() {
+//   let input2 = document.querySelector('.select').value;
+//   console.log(input2);
+// }

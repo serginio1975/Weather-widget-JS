@@ -15,7 +15,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
     />
-    <link href="https://fonts.cdnfonts.com/css/noto-sans-symbols-2" rel="stylesheet">
+    <link
+      href="https://fonts.cdnfonts.com/css/noto-sans-symbols-2"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -23,32 +26,46 @@
     <!-- Controler -->
     <div class="container-main">
       <div class="controler">
-      <form class="form" action="" >
-`
-        
-        <input type="text" class="container-input" name="city" placeholder="Enter city"  value="" id="city-value"/> 
-           <select  class="select" name="select-city" id="">
-             <!-- ????? -->
-             <option >Select city</option>
-             <option value="Kyiv">Kyiv</option>
-             <option value="Kharkiv">Kharkiv</option>
-             <option value="Lviv">Lviv</option>
-           </select>
-      
-        <!-- <input type="date" class="container-input controler-date" placeholder="Select date"> -->
-         <div class="row-checkbox">  
-          <label class="" for="save">Save widget</label>
-          <input type="checkbox" class=" container-input "  name="save"/>
-         </div>
+        <form class="form" action="">
+          <input
+            type="text"
+            class="container-input"
+            name="city"
+            placeholder="Enter city"
+            value="{cityInput}"
+            id="city-value"
+          />
+          <select class="select" name="select-city" id="">
+            <option>Select city</option>
+            <option value="Kyiv">Kyiv</option>
+            <option value="Kharkiv">Kharkiv</option>
+            <option value="Lviv">Lviv</option>
+          </select>
 
-        <button type="submit" class="button-get-weather" id="controler-submit">Get weather</button>
-      </form>
-      
+          <input
+            type="date"
+            class="container-input controler-date"
+            placeholder="Select date"
+          />
+          <div class="row-checkbox">
+            <label class="" for="save">Save widget</label>
+            <input type="checkbox" class="container-input" name="save" />
+          </div>
+
+          <button
+            type="submit"
+            class="button-get-weather"
+            id="controler-submit"
+          >
+            Get weather
+          </button>
+        </form>
+      </div>
     </div>
-      <div class="container-widgets" id="container-widgets"></div>
-     
-      <!-- widgets -->
-      <!-- <div style="position: relative;" class="container-day__small-section container-widgets_color-day">
+    <div class="container-widgets" id="container-widgets"></div>
+
+    <!-- widgets -->
+    <!-- <div style="position: relative;" class="container-day__small-section container-widgets_color-day">
           <section class="container-day__curent-time-of-day">
             <span>Day</span>
             <button class="detail-info-day">...</button>
@@ -64,9 +81,9 @@
           >
             Swipe to see details!
           </button>
-        </div>
-      </div>-->
-    
+         </div>
+       </div>-->
+
     <!-- Script -->
     <script type="module" src="./index.js"></script>
   </body>
