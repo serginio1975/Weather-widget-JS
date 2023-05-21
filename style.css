@@ -112,6 +112,7 @@ body {
 }
 
 .container-widgets {
+  width: 100%;
   position: relative;
   flex-wrap: wrap;
   display: flex;

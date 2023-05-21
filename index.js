@@ -44,7 +44,7 @@ let selectCity = [
 // for(let obj  of selectCity ){
 //   console.log(obj.city);
 // };
-const options = selectotCity.options;
+const options = selectCity.options;
 
 for (let i = 0; i < selectCity.length; i++) {
   console.log('loop city', selectCity[i].city);
