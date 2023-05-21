@@ -1,59 +1,137 @@
 const buttonGetWeather = document.getElementById('controler-submit');
 const widgets = document.getElementById('container-widgets');
 
-let cityInput = document.querySelector('.container-input');
+let cityInput = document.getElementById('city-input');
+let dateInput = document.getElementById('date-input');
+let checkboxInput = document.getElementById('checkbox-input');
+let selectorCity = document.getElementById('select-city');
+
 const citySelect = document.querySelector('.select');
+const dataSelect = document.querySelector('.controler-date');
+const checkboxSelect = document.querySelector('.row-checkbox');
 
 buttonGetWeather.addEventListener('click', handleSubmit);
-citySelect.addEventListener('change', selectCity);
+citySelect.addEventListener('change', selectedCity);
+dataSelect.addEventListener('change', selectDate);
+checkboxSelect.addEventListener('change', selectCheckbox);
 
-let select_City = [
+const widgetsData = [
+  // { id: '23232', city: 'Lviv', dateDay: '', isSave: true },
+  // { id: '1111', city: 'Paris', dateDay: '', isSave: true },
+  // { id: '09080', city: '', dateDay: '', isSave: true },
+  // { id: '342421', city: '', dateDay: '', isSave: true },
+];
+
+let selectCity = [
   {
+    id: 1300343,
     city: 'Kyiv',
-    index: 1322343,
     country: 'Ukraine',
   },
   {
+    id: 1322343,
     city: 'Kharkiv',
     country: 'Ukraine',
   },
   {
+    id: 1320943,
     city: 'Antalia',
     country: 'Turkey',
   },
 ];
 
-function selectCity(event) {
-  console.log('event.target.value', event.target.value); //kiev
+// loop
+// for(let obj  of selectCity ){
+//   console.log(obj.city);
+// };
+const options = selectotCity.options;
+
+for (let i = 0; i < selectCity.length; i++) {
+  console.log('loop city', selectCity[i].city);
+
+  //  take options in select html
+}
+
+let createObj;
+
+const today = '2020-02-20'; // code why find current date
+dateInput.value = today;
+
+function selectedCity(event) {
+  console.log('event.target.value_city', event.target.value); //value: city!
   // event.target.value = cityInput.value;
   cityInput.value = event.target.value;
+}
+//
+function selectDate(event) {
+  dateInput.value = event.target.value;
+  console.log('event.target.value_date', event.target.value); //value: date!
+  console.log(document.getElementById('date-input').value); // 2-й вар.
+  // !!!!!!!!!!!!!! does not output to console !!!!!!!
+}
+//
+function selectCheckbox(event) {
+  checkboxInput.value = event.target.value;
+  // console.log('event.target.value_checkbox', event.target.value); //value: date!
+  console.log('checkboxInput.checked', checkboxInput.checked);
 }
 
 function handleSubmit(event) {
   event.preventDefault();
 
   console.log('button-get-weather: clicked');
+
+  // new obj
+  createObj = {
+    id: new Date().getTime().toString(),
+    city: citySelect.value,
+    dateDay: dataSelect.value,
+    isSave: checkboxInput.checked, // on => true
+  };
+
+  console.log('createObj', createObj);
+
+  // push to Array widgetsData;
+  widgetsData.push(createObj);
+
+  console.log('widgetsData', widgetsData);
+
   render();
 }
 
 function render() {
   const renderHTML = ` 
-    <div  class="container-day__small-section container-widgets_color-day">
-      <section class="container-day__curent-time-of-day">
-        <div>Day</div>
-        <div>...</div>
-        <div
-          class="container-day__figure-small container-widgets_color-sun"
-        ></div>
-      </section>
+  <div
+  class="container-day__big-section container-widgets_color-day"
+  id="container-day__big-section"
+>
+  <section class="container-day__curent-time-of-day">
+    <span>Day</span>
+    <div class="detail-info-day">...</div>
+    <figure class="container-day__fa-sharp fa-solid fa-list"></figure>
+  </section>
 
-      <span class="container-day__temperature-curent">32º</span>
-      <button
-        class="container-day__button container-day_color-btn-day"
-        type="submit" id="button-2"
-      >Swipe to see details!
-      </button>
+  <div
+    class="container-day__figure-big container-widgets_color-sun container-widgets__shine"
+  ></div>
+  <div class="container-day__temperature-curent" id="temp">32cº</div>
+  <div class="container-day__city-curent out" id="sity">${createObj.city}</div>
+  <section class="container-day__parametrs">
+    <span>Wind now</span>
+    <span>Humidity</span>
+    <span>Precipitation</span>
+  </section>
+
+  <div class="container-day__value-measurement">
+    <div>
+      15<span class="container-day__units-measurement">km</span>
     </div>
+    <div>32<span class="container-day__units-measurement">%</span></div>
+    <span
+      >87<span class="container-day__units-measurement">%</span></span
+    >
+  </div>
+</div>
 `;
   widgets.innerHTML += renderHTML;
 }
@@ -71,3 +149,4 @@ function render() {
 //   let input2 = document.querySelector('.select').value;
 //   console.log(input2);
 // }
+// to day

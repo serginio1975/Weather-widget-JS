@@ -121,6 +121,7 @@ body {
   box-shadow: 1vw -1vw 3vw -1vw var(--color-shadow);
 }
 .container-widgets {
+  width: 100%;
   position: relative;
   flex-wrap: wrap;
   display: flex;

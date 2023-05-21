@@ -32,24 +32,30 @@
             class="container-input"
             name="city"
             placeholder="Enter city"
-            value="{cityInput}"
-            id="city-value"
+            value="Any city..."
+            id="city-input"
           />
-          <select class="select" name="select-city" id="">
-            <option>Select city</option>
-            <option value="Kyiv">Kyiv</option>
+          <select class="select" name="select-city" id="select-city">
+            <!-- <option value="Kyiv">Kyiv</option>
             <option value="Kharkiv">Kharkiv</option>
-            <option value="Lviv">Lviv</option>
+            <option value="Lviv">Lviv</option> -->
           </select>
 
           <input
             type="date"
-            class="container-input controler-date"
+            class="container-input-date controler-date"
             placeholder="Select date"
+            id="date-input"
           />
+
           <div class="row-checkbox">
-            <label class="" for="save">Save widget</label>
-            <input type="checkbox" class="container-input" name="save" />
+            <label for="checkbox-input">Save widget</label>
+            <input
+              type="checkbox"
+              class="container-input"
+              name="save"
+              id="checkbox-input"
+            />
           </div>
 
           <button
@@ -61,8 +67,8 @@
           </button>
         </form>
       </div>
+      <div class="container-widgets" id="container-widgets"></div>
     </div>
-    <div class="container-widgets" id="container-widgets"></div>
 
     <!-- widgets -->
     <!-- <div style="position: relative;" class="container-day__small-section container-widgets_color-day">
