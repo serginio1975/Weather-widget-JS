@@ -1,28 +1,47 @@
+//
 const buttonGetWeather = document.getElementById('controler-submit');
 const widgets = document.getElementById('container-widgets');
-
+//
 let cityInput = document.getElementById('city-input');
 let dateInput = document.getElementById('date-input');
 let checkboxInput = document.getElementById('checkbox-input');
 let selectorCity = document.getElementById('select-city');
-
 const citySelect = document.querySelector('.select');
 const dataSelect = document.querySelector('.controler-date');
 const checkboxSelect = document.querySelector('.row-checkbox');
-
+//
 buttonGetWeather.addEventListener('click', handleSubmit);
 citySelect.addEventListener('change', selectedCity);
 dataSelect.addEventListener('change', selectDate);
 checkboxSelect.addEventListener('change', selectCheckbox);
 
-const widgetsData = [
+// Create minLimitDate.
+let minLimitDate = new Date().toISOString().split('T')[0];
+
+// Create maxLimitDate and interval of date!!!
+let maxLimitDate = new Date(minLimitDate);
+maxLimitDate.setDate(maxLimitDate.getDate() + 4);
+maxLimitDate = maxLimitDate.toISOString().split('T')[0];
+
+dataSelect.setAttribute('min', minLimitDate);
+dataSelect.setAttribute('max', maxLimitDate);
+
+console.log('minLimitDate ', minLimitDate);
+console.log('maxLimitDate:', maxLimitDate);
+
+console.log(' dateInput.min', dateInput.min);
+console.log(' dateInput.max', dateInput.max);
+
+//
+let createObject;
+const widgetsDataArray = [
   // { id: '23232', city: 'Lviv', dateDay: '', isSave: true },
   // { id: '1111', city: 'Paris', dateDay: '', isSave: true },
   // { id: '09080', city: '', dateDay: '', isSave: true },
   // { id: '342421', city: '', dateDay: '', isSave: true },
 ];
 
-let selectCity = [
+const selectCity = [
   {
     id: 1300343,
     city: 'Kyiv',
@@ -44,18 +63,14 @@ let selectCity = [
 // for(let obj  of selectCity ){
 //   console.log(obj.city);
 // };
-const options = selectCity.options;
+const options = citySelect.options;
+console.log('options', options);
 
 for (let i = 0; i < selectCity.length; i++) {
   console.log('loop city', selectCity[i].city);
 
   //  take options in select html
 }
-
-let createObj;
-
-const today = '2020-02-20'; // code why find current date
-dateInput.value = today;
 
 function selectedCity(event) {
   console.log('event.target.value_city', event.target.value); //value: city!
@@ -82,19 +97,19 @@ function handleSubmit(event) {
   console.log('button-get-weather: clicked');
 
   // new obj
-  createObj = {
+  createObject = {
     id: new Date().getTime().toString(),
     city: citySelect.value,
     dateDay: dataSelect.value,
     isSave: checkboxInput.checked, // on => true
   };
 
-  console.log('createObj', createObj);
+  console.log('createObject', createObject);
 
   // push to Array widgetsData;
-  widgetsData.push(createObj);
+  widgetsDataArray.push(createObject);
 
-  console.log('widgetsData', widgetsData);
+  console.log('widgetsDataArray', widgetsDataArray);
 
   render();
 }
@@ -115,7 +130,7 @@ function render() {
     class="container-day__figure-big container-widgets_color-sun container-widgets__shine"
   ></div>
   <div class="container-day__temperature-curent" id="temp">32cº</div>
-  <div class="container-day__city-curent out" id="sity">${createObj.city}</div>
+  <div class="container-day__city-curent out" id="sity">${createObject.city}</div>
   <section class="container-day__parametrs">
     <span>Wind now</span>
     <span>Humidity</span>
