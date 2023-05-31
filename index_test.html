@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>index_2</title>
+    <title>index_2_TEST!!!!!!!!!!!!!!</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
@@ -23,29 +23,51 @@
   </head>
 
   <body>
-    <!-- Controler -->
+    <!-- Controler  -->
     <div class="container-main">
-      <div class="controler">
-        <form class="form" action="">
-          <input
-            type="text"
-            class="container-input"
-            name="city"
-            placeholder="Enter city"
-            value="Any city..."
-            id="city-input"
-          />
-          <select class="select" name="select-city" id="select-city">
-            <option value="Kyiv">Kyiv</option>
-            <option value="Kharkiv">Kharkiv</option>
-            <option value="Lviv">Lviv</option>
-          </select>
+        <div class="controler">
+          <form class="form" action="">
+             <input
+             type="text"
+             class="container-input"
+             name="city"
+             placeholder="Enter city"
+             value=""
+             required
+             id="city-input"
+           />
 
+        <div class="search-list-block">
+          <select class="select" name="select-city" id="select-city">
+           <option value="Kyiv">Kyiv</option>
+           <option value="Kharkiv">Kharkiv</option>
+           <option value="Lviv">Lviv</option>
+          </select>
+      </div>
+          
+          <!-- <div class="search">
+            <input type="text" id="input-search">
+            <div class="search-list-block">
+              <select name="" id="search-list">
+                <option selected disabled></option>
+                <option value="">Russia</option>
+                <option value="">Europe</option>
+                <option value="">Asia</option>
+                <option value="">Australia</option>
+                <option value="">SUA</option>
+              </select>
+            </div>
+          </div> -->
+          
+          <!--  -->
           <input
             type="date"
             class="container-input-date controler-date"
             placeholder="Select date"
             id="date-input"
+            
+            min="2023-05-23" 
+            max="2023-06-23"
           />
 
           <div class="row-checkbox">
@@ -70,27 +92,6 @@
       <div class="container-widgets" id="container-widgets"></div>
     </div>
 
-    <!-- widgets -->
-    <!-- <div style="position: relative;" class="container-day__small-section container-widgets_color-day">
-          <section class="container-day__curent-time-of-day">
-            <span>Day</span>
-            <button class="detail-info-day">...</button>
-            <figure
-              class="container-day__figure-small container-widgets_color-sun"
-            ></figure>
-          </section>
-
-          <span class="container-day__temperature-curent">32º</span>
-          <button
-            class="container-day__button container-day_color-btn-day container-day__button-text"
-            type="submit"
-          >
-            Swipe to see details!
-          </button>
-         </div>
-       </div>-->
-
-    <!-- Script -->
-    <script type="module" src="./index.js"></script>
+   <script type="module" src="./index_test.js"></script>
   </body>
 </html>
