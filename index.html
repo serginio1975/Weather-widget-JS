@@ -35,39 +35,21 @@
              value=""
              required
              id="city-input"
+             autocomplete="off"
            />
 
-        <div class="search-list-block">
-          <select class="select" name="select-city" id="select-city">
-           <option value="Kyiv">Kyiv</option>
-           <option value="Kharkiv">Kharkiv</option>
-           <option value="Lviv">Lviv</option>
-          </select>
+        <div class="search-list-block ">
+           <select 
+           class="select hidden" name="select-city" id="search-list-city"
+           ></select>
       </div>
           
-          <!-- <div class="search">
-            <input type="text" id="input-search">
-            <div class="search-list-block">
-              <select name="" id="search-list">
-                <option selected disabled></option>
-                <option value="">Russia</option>
-                <option value="">Europe</option>
-                <option value="">Asia</option>
-                <option value="">Australia</option>
-                <option value="">SUA</option>
-              </select>
-            </div>
-          </div> -->
-          
-          <!--  -->
+        
           <input
             type="date"
             class="container-input-date controler-date"
             placeholder="Select date"
             id="date-input"
-            
-            min="2023-05-23" 
-            max="2023-06-23"
           />
 
           <div class="row-checkbox">
@@ -92,6 +74,6 @@
       <div class="container-widgets" id="container-widgets"></div>
     </div>
 
-   <script type="module" src="./index_test.js"></script>
+   <script type="module" src="./index.js"></script>
   </body>
 </html>

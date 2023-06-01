@@ -1,19 +1,29 @@
-// Declaring variables.
-
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
+const cityInput = document.getElementById("city-input"); //!
+// const selectOption = document.getElementById("select");
+const dataSelect = document.getElementById("date-input");
+const checkboxSelect = document.getElementById("checkbox-input");
 
-const citySelect = document.getElementById("city-input");  //!
-const selectOption = document.getElementById("select-city");
+const selectCityList = document.getElementById("search-list-city");
 
-const dataSelect = document.querySelector(".controler-date");
-const checkboxSelect = document.querySelector(".row-checkbox");
+cityInput.addEventListener("focus", selectedCity);
+selectCityList.addEventListener("change", (e) => {
+  console.log("select city", e.target.value);
+  cityInput.value = e.target.value;
+  selectCityList.classList.add("hidden");
 
-
-citySelect.addEventListener("click", selectedCity);
+});
 dataSelect.addEventListener("change", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
+
+
+function selectedCity(event) {
+  console.log("focus");
+  selectCityList.classList.remove("hidden");
+  cityInput.value = event.target.value;
+}
 
 // Create minLimitDate.
 let minLimitDate = new Date().toISOString().split("T")[0];
@@ -23,10 +33,8 @@ let maxLimitDate = new Date(minLimitDate);
 maxLimitDate.setDate(maxLimitDate.getDate() + 4);
 maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 
-
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
-
 
 // Create obgect.
 let createObject;
@@ -34,8 +42,8 @@ let createObject;
 // Create array.
 const widgetsDataArray = [];
 
-// Create array.
-const selectCity = [
+//List city select.
+const arrayCity = [
   {
     id: 1300343,
     city: "Kyiv",
@@ -54,26 +62,15 @@ const selectCity = [
 ];
 
 // !!!
-for (let i = 0; i < selectCity.length; i++) {
-  const option = document.createElement("option"); // create element option in html
-  option.value = selectCity[i].city; // записуемо в value міста
-  option.textContent = selectCity[i].city + "," + selectCity[i].country; // в option додаем текст міста та краіни
-  selectOption.appendChild(option); //В citySelect додаем option)
+for (let i = 0; i < arrayCity.length; i++) {
+  let option = document.createElement("option");
+
+  option.value = arrayCity[i].city;
+
+  option.textContent = arrayCity[i].city + "," + arrayCity[i].country;
+  // console.log(option);
+  selectCityList.appendChild(option);
 }
-// !!!
-
-
-
-//
-function selectedCity(event) {
-  console.log("event.target.value_city"); //value: city!
-  event.target.value = citySelect.value;
-  citySelect.value = event.target.value;
-dataSelect.value = event.target.value;
- // console.log('event.target.value_date', event.target.value); //value: date!
-  //console.log(document.getElementById('date-input').value); // 2-й вар.
- // !!!!!!!!!!!!!! does not output to console !!!!!!!
-};
 
 
 
@@ -98,7 +95,7 @@ function handleSubmit(event) {
   // create object.
   createObject = {
     id: new Date().getTime().toString(),
-    city: citySelect.value,
+    city: cityInput.value,
     dateDay: dataSelect.value,
     isSave: checkboxSelect.checked, // on => true
   };
