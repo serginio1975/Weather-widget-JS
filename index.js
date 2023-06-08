@@ -1,28 +1,40 @@
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
-const cityInput = document.getElementById("city-input"); //!
-// const selectOption = document.getElementById("select");
+
+const cityInput = document.getElementById("city-input"); 
 const dataSelect = document.getElementById("date-input");
 const checkboxSelect = document.getElementById("checkbox-input");
 
 const selectCityList = document.getElementById("search-list-city");
 
+// !!!!!!!!!!!!!!!!!!!!
 cityInput.addEventListener("focus", selectedCity);
-selectCityList.addEventListener("change", (e) => {
-  console.log("select city", e.target.value);
-  cityInput.value = e.target.value;
-  selectCityList.classList.add("hidden");
+selectCityList.addEventListener("change", getSelectListCity)
 
-});
 dataSelect.addEventListener("change", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
+
 buttonGetWeather.addEventListener("click", handleSubmit);
 
 
+function getSelectListCity(event) {
+  // console.log("select city:", event.target.value);
+  cityInput.value = event.target.value;
+  selectCityList.classList.add("hidden");
+}
+
 function selectedCity(event) {
-  console.log("focus");
+  // console.log("focus");
   selectCityList.classList.remove("hidden");
   cityInput.value = event.target.value;
+  // console.log(cityInput.value );
+}
+
+function selectDate(event) {
+  dataSelect.value = event.target.value;
+  // console.log('event.target.value_date', event.target.value); //value: date!
+  // console.log(document.getElementById('date-input').value); // 2-й вар.
+  // !!!!!!!!!!!!!! does not output to console !!!!!!!
 }
 
 // Create minLimitDate.
@@ -36,13 +48,43 @@ maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
+//
+function selectCheckbox(event) {
+  checkboxSelect.value = event.target.value;
+  // console.log('event.target.value_checkbox', event.target.value); //value: date!
+  // console.log('checkboxInput.checked', checkboxInput.checked);
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+  // console.log('button-get-weather: clicked');
+// console.log('cityInput.value:', cityInput.value);
+  // create object.
+  createObject = {
+    id: new Date().getTime().toString(),
+    city: cityInput.value,
+    dateDay: dataSelect.value,
+    isSave: checkboxSelect.checked, // on => true
+  };
+
+  // console.log("createObject", createObject);
+
+  // Перемещение обьекта createObject в массив widgetsDataArray.
+  // (с оригинальными значениями ключей.)
+  widgetsDataArray.push(createObject);
+  // console.log('widgetsDataArray', widgetsDataArray);
+   cityInput.value = '';
+  render();
+}
+
+
 // Create obgect.
 let createObject;
 
 // Create array.
 const widgetsDataArray = [];
 
-//List city select.
+// Сreate List city select.
 const arrayCity = [
   {
     id: 1300343,
@@ -64,51 +106,12 @@ const arrayCity = [
 // !!!
 for (let i = 0; i < arrayCity.length; i++) {
   let option = document.createElement("option");
-
   option.value = arrayCity[i].city;
-
   option.textContent = arrayCity[i].city + "," + arrayCity[i].country;
   // console.log(option);
   selectCityList.appendChild(option);
 }
 
-
-
-//
-function selectDate(event) {
-  dataSelect.value = event.target.value;
-  // console.log('event.target.value_date', event.target.value); //value: date!
-  // console.log(document.getElementById('date-input').value); // 2-й вар.
-  // !!!!!!!!!!!!!! does not output to console !!!!!!!
-}
-//
-function selectCheckbox(event) {
-  checkboxSelect.value = event.target.value;
-  // console.log('event.target.value_checkbox', event.target.value); //value: date!
-  // console.log('checkboxInput.checked', checkboxInput.checked);
-}
-
-function handleSubmit(event) {
-  event.preventDefault();
-  // console.log('button-get-weather: clicked');
-
-  // create object.
-  createObject = {
-    id: new Date().getTime().toString(),
-    city: cityInput.value,
-    dateDay: dataSelect.value,
-    isSave: checkboxSelect.checked, // on => true
-  };
-
-  console.log("createObject", createObject);
-
-  // Перемещение обьекта createObject в массив widgetsDataArray.
-  // (с оригинальными значениями ключей.)
-  widgetsDataArray.push(createObject);
-  // console.log('widgetsDataArray', widgetsDataArray);
-
-  render();
-}
 
 function render() {
   const renderHTML = ` 
