@@ -10,7 +10,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
       integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI="
       crossorigin="anonymous"
-    />
+    />z
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
@@ -25,8 +25,9 @@
   <body>
     <!-- Controler  -->
     <div class="container-main">
-        <div class="controler">
+     <div class="controler">
           <form class="form" action="">
+            <div>
              <input
              type="text"
              class="container-input"
@@ -37,19 +38,17 @@
              id="city-input"
              autocomplete="off"
            />
-
-        <div class="search-list-block ">
-           <select 
+           <ul
            class="select hidden" name="select-city" id="search-list-city"
-           ></select>
-      </div>
-          
-        
+           >
+          </ul>
+          </div>
           <input
             type="date"
             class="container-input-date controler-date"
             placeholder="Select date"
             id="date-input"
+          
           />
 
           <div class="row-checkbox">
@@ -59,6 +58,7 @@
               class="container-input"
               name="save"
               id="checkbox-input"
+             
             />
           </div>
 

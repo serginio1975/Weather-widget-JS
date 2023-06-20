@@ -28,6 +28,19 @@ body {
 }
 #search-list {width: 100%;}
 
+.select {list-style-type: none; background-color: white;
+  padding-inline-start: 20px;
+  padding-inline-end: 55px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin-block-start: 0em;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  
+
+}
+
 .container-main {
   display: flex;
   align-items: center;
@@ -72,6 +85,8 @@ body {
  z-index: 1; 
 }
 
+
+
 .hidden{
   display: none;
 }
@@ -86,7 +101,7 @@ body {
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
   border: none;
-  padding: 5px;
+  padding: 10px;
   border-radius: 3px;
 }
 
