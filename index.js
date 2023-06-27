@@ -1,3 +1,10 @@
+// API ?
+// fetch methods 
+// async
+// rest method "GET"
+// http & https
+
+
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
 const cityInput = document.getElementById("city-input");
@@ -11,7 +18,6 @@ selectCityList.addEventListener("click", getSelectListCity);
 dataSelect.addEventListener("change", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
-
 
 // Сreate List city select.
 const arrayCity = [
@@ -27,70 +33,81 @@ const arrayCity = [
   },
   {
     id: 1320943,
-    city: "Antalia",
+    city: "Antalya",
     country: "Turkey",
+
+    id: 1320945,
+    city: "Lviv",
+    country: "Ukraine",
   },
 ];
 
+// "http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&appid=79e9565b6d45f0a48a3ff121a711792c"
+
+
+
+
 // Create array
-let filterArrayCity = [];
+let filterArrayCity1 = [];
 
 // Create obgect.
 let createObject;
 
- let option = document.createElement("li");
+
+
+
+let option = document.createElement("li");
 
 // Create array.
 const widgetsDataArray = [];
 
-
 function searchCity(event) {
+  // clear list location
+  selectCityList.innerHTML = "";
+
   // search city by word key
   if (cityInput.value != "") {
     cityInput.value = event.target.value;
-    console.log("search city by word key:", cityInput.value);
 
-    // filter list city
-    filterArrayCity = arrayCity.filter(   // 1 add include()
-      (el) => el.city.toLowerCase() === cityInput.value.toLowerCase()  // 2 condition for country  - some & every methods
+    console.log('cityInput.value=', cityInput.value);
+
+    // // filter list city:
+    const writingWords = cityInput.value; // event.target from input search city
+    const searchWords = writingWords.split(" "); // "Bila Tserkva, Kyivska obl Ukraine"
+    filterArrayCity1 = arrayCity.filter((obj) =>  // місто, країна 
+      searchWords.every((word) =>
+        obj.city.toLowerCase().includes(word.toLowerCase()) 
+        || obj.country.toLowerCase().includes(word.toLowerCase()) 
+      )
     );
-    console.log("filterArrayCity in searchCity;", filterArrayCity);
 
-
-    
+    console.log("filterArrayCity length", filterArrayCity1.length); // ok  2obj
     //add item to list city
-    for (let i = 0; i < filterArrayCity.length; i++) {
-     
-      // option.value = arrayCity[i].city;
-      option.setAttribute("value", filterArrayCity[i].city);
-      option.textContent =
-        filterArrayCity[i].city + "," + filterArrayCity[i].country;
-      console.log("option:", option);
-      // option.addEventListener("click", getSelectListCity);
-      selectCityList.appendChild(option); // змiнна.
-      
-      filterArrayCity = [];
-    }
 
+    for (let i = 0; i < filterArrayCity1.length; i++) {
+      const option = document.createElement("option");
+      option.setAttribute("value", filterArrayCity1[i].city);
+      option.textContent =
+        filterArrayCity1[i].city + "," + filterArrayCity1[i].country;
+
+      selectCityList.appendChild(option); // !
+    }
     // show list city
     selectCityList.classList.remove("hidden");
   }
-};
+}
 
 function getSelectListCity(event) {
   // console.log("select city:", event.target.value);
   const selectedValue = event.target.getAttribute("value");
-  console.log("select", selectedValue); // ??????
   cityInput.value = selectedValue;
   selectCityList.classList.add("hidden");
-  
-  filterArrayCity = [];
-  console.log("getSelectListCity   filterArrayCity",  filterArrayCity);
-  // clear selectCityList
-    //  selectCityList.appendChild(option);
-  selectCityList.removeChild(option);
-};
 
+  filterArrayCity1 = [];
+  // clear selectCityList
+  //  selectCityList.appendChild(option);
+  // selectCityList.removeChild(option);
+}
 
 // Create minLimitDate.
 let minLimitDate = new Date().toISOString().split("T")[0];
@@ -102,15 +119,13 @@ maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
-
 function selectDate(event) {
   dataSelect.value = event.target.value;
-};
-
+}
 
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
-};
+}
 
 function handleSubmit(event) {
   event.preventDefault();
@@ -122,52 +137,68 @@ function handleSubmit(event) {
     isSave: checkboxSelect.checked, // on => true
   };
 
-  // Перемещение обьекта createObject в массив widgetsDataArray.
   // (с оригинальными значениями ключей.)
   widgetsDataArray.push(createObject);
-  console.log("createObject", createObject);
 
   // clear form
   cityInput.value = "";
   dataSelect.value = minLimitDate;
   checkboxSelect.checked = false;
 
-  render();
-};
 
-function render() {
-  const renderHTML = ` 
-  <div
-  class="container-day__big-section container-widgets_color-day"
-  id="container-day__big-section"
->
-  <section class="container-day__curent-time-of-day">
-    <span>Day</span>
-    <div class="detail-info-day">...</div>
-    <figure class="container-day__fa-sharp fa-solid fa-list"></figure>
-  </section>
 
-  <div
-    class="container-day__figure-big container-widgets_color-sun container-widgets__shine"
-  ></div>
-  <div class="container-day__temperature-curent" id="temp">32cº</div>
-  <div class="container-day__city-curent out" id="sity">${createObject.city}</div>
-  <section class="container-day__parametrs">
-    <span>Wind now</span>
-    <span>Humidity</span>
-    <span>Precipitation</span>
-  </section>
+  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${createObject.city},ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
+   .then((response) => {
+     return response.json();
+    })
+   .then((data) => {
+    console.log(data);
+    console.log('cityInput.value==', createObject.city);
+    
+    //document.getElementById('sity').innerHTML = Math.round(data.main.temp - 273) + '&deg;'; 
+    let temperatureCurent = Math.round(data.main.temp - 273); // Out-??????????????
 
-  <div class="container-day__value-measurement">
-    <div>
-      15<span class="container-day__units-measurement">km</span>
-    </div>
-    <div>32<span class="container-day__units-measurement">%</span></div>
-    <span
-      >87<span class="container-day__units-measurement">%</span></span
+    function render() {
+      const renderHTML = ` 
+      <div
+      class="container-day__big-section container-widgets_color-day"
+      id="container-day__big-section"
     >
-  </div>
-</div>
-`;
-  widgets.innerHTML += renderHTML;
-};
+      <section class="container-day__curent-time-of-day">
+        <span>Day</span>
+        <div class="detail-info-day">...</div>
+        <figure class="container-day__fa-sharp fa-solid fa-list"></figure>
+      </section>
+    
+      <div
+        class="container-day__figure-big container-widgets_color-sun container-widgets__shine"
+      ></div>
+      <div class="container-day__temperature-curent" id="temp">${temperatureCurent}</div>
+      <div class="container-day__city-curent out" id="sity">${createObject.city}</div>
+      <section class="container-day__parametrs">
+        <span>Wind now</span>
+        <span>Humidity</span>
+        <span>Precipitation</span>
+      </section>
+    
+      <div class="container-day__value-measurement">
+        <div>
+          15<span class="container-day__units-measurement">km</span>
+        </div>
+        <div>32<span class="container-day__units-measurement">%</span></div>
+        <span
+          >87<span class="container-day__units-measurement">%</span></span
+        >
+      </div>
+    </div>
+    `;
+      widgets.innerHTML += renderHTML;
+    }
+    render();
+    
+  });
+
+}
+
+
+
