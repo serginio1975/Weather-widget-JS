@@ -4,7 +4,9 @@
 // rest method "GET"
 // http & https
 
-
+// import { showPosition } from "./getlocation.js";
+// console.log("showPosition", showPosition());
+let valueCheckbox;
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
 const cityInput = document.getElementById("city-input");
@@ -12,7 +14,6 @@ const dataSelect = document.getElementById("date-input");
 const checkboxSelect = document.getElementById("checkbox-input");
 const selectCityList = document.getElementById("search-list-city");
 
-// cityInput.addEventListener("focus", searchCity);
 cityInput.addEventListener("input", searchCity);
 selectCityList.addEventListener("click", getSelectListCity);
 dataSelect.addEventListener("change", selectDate);
@@ -20,6 +21,7 @@ checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
 
 // Сreate List city select.
+// get from localStorage
 const arrayCity = [
   {
     id: 1300343,
@@ -42,18 +44,13 @@ const arrayCity = [
   },
 ];
 
-// "http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&appid=79e9565b6d45f0a48a3ff121a711792c"
-
-
-
+// "http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&date={date}&exclude=hourly,daily&appid=79e9565b6d45f0a48a3ff121a711792c"
 
 // Create array
 let filterArrayCity1 = [];
 
 // Create obgect.
 let createObject;
-
-
 
 
 let option = document.createElement("li");
@@ -69,7 +66,7 @@ function searchCity(event) {
   if (cityInput.value != "") {
     cityInput.value = event.target.value;
 
-    console.log('cityInput.value=', cityInput.value);
+    
 
     // // filter list city:
     const writingWords = cityInput.value; // event.target from input search city
@@ -107,6 +104,7 @@ function getSelectListCity(event) {
   // clear selectCityList
   //  selectCityList.appendChild(option);
   // selectCityList.removeChild(option);
+  console.log('cityInput.value=', cityInput.value);
 }
 
 // Create minLimitDate.
@@ -125,6 +123,7 @@ function selectDate(event) {
 
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
+  valueCheckbox = true;
 }
 
 function handleSubmit(event) {
@@ -140,15 +139,12 @@ function handleSubmit(event) {
   // (с оригинальными значениями ключей.)
   widgetsDataArray.push(createObject);
 
-  // clear form
-  cityInput.value = "";
-  dataSelect.value = minLimitDate;
-  checkboxSelect.checked = false;
+  
+  // http://api.openweathermap.org/data/2.5/weather?q=Київ,ua.lat=39.099724&lon=-94.578331&appid=79e9565b6d45f0a48a3ff121a711792c
 
-
-
-  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${createObject.city},ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
-   .then((response) => {
+  // fetch(`http://api.openweathermap.org/data/2.5/weather?q=Київ,ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
+   fetch(`http://api.openweathermap.org/data/2.5/weather?q=${createObject.city},ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
+  .then((response) => {
      return response.json();
     })
    .then((data) => {
@@ -157,8 +153,10 @@ function handleSubmit(event) {
     
     //document.getElementById('sity').innerHTML = Math.round(data.main.temp - 273) + '&deg;'; 
     let temperatureCurent = Math.round(data.main.temp - 273); // Out-??????????????
+    let scoreWind = Math.round(data.wind.speed);
+    let curentPressure = Math.round(data.main.pressure / 1.33322);
 
-    function render() {
+    function getDayRenderHtml() {
       const renderHTML = ` 
       <div
       class="container-day__big-section container-widgets_color-day"
@@ -173,32 +171,49 @@ function handleSubmit(event) {
       <div
         class="container-day__figure-big container-widgets_color-sun container-widgets__shine"
       ></div>
-      <div class="container-day__temperature-curent" id="temp">${temperatureCurent}</div>
+      <div class="container-day__temperature-curent" id="temp">${temperatureCurent}°</div>
       <div class="container-day__city-curent out" id="sity">${createObject.city}</div>
       <section class="container-day__parametrs">
         <span>Wind now</span>
-        <span>Humidity</span>
+        <span>Pressure</span>
         <span>Precipitation</span>
       </section>
     
       <div class="container-day__value-measurement">
         <div>
-          15<span class="container-day__units-measurement">km</span>
+          ${scoreWind}<span class="container-day__units-measurement">m/c</span>
         </div>
-        <div>32<span class="container-day__units-measurement">%</span></div>
+        <div>${curentPressure}<span class="container-day__units-measurement">mm</span></div>
         <span
           >87<span class="container-day__units-measurement">%</span></span
         >
       </div>
     </div>
     `;
-      widgets.innerHTML += renderHTML;
-    }
-    render();
-    
-  });
 
+      if (valueCheckbox === true && cityInput.value != "") {
+        widgets.innerHTML += renderHTML
+      } else if (cityInput.value !== "") {
+        widgets.innerHTML = renderHTML
+      }
+    }
+     
+     getDayRenderHtml();
+
+     // clear form
+     cityInput.value = "";
+     dataSelect.value = minLimitDate;
+     checkboxSelect.checked = false;
+   });
 }
 
 
 
+const regionNames = new Intl.DisplayNames(
+  ['en'], {type: 'region'}
+);
+
+console.log(regionNames.of('UA')); // 👉️ "United States"
+// console.log(regionNames.of('GB')); // 👉️ "United kingdom"
+// console.log(regionNames.of('DE')); // 👉️ "Germany"
+// console.log(regionNames.of('AU')); // 👉️ "Australia"
