@@ -1,5 +1,3 @@
-
-// When 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
@@ -22,4 +20,6 @@ if (navigator.geolocation) {
   
     console.log("Ваша геолокація: " + latitude + ", " + longitude);
   }
+  
+// ???????????????????????
   

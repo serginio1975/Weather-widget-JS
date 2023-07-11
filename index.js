@@ -6,7 +6,8 @@
 
 // import { showPosition } from "./getlocation.js";
 // console.log("showPosition", showPosition());
-let valueCheckbox;
+
+
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
 const cityInput = document.getElementById("city-input");
@@ -20,31 +21,14 @@ dataSelect.addEventListener("change", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
 
-// Сreate List city select.
-// get from localStorage
-const arrayCity = [
-  {
-    id: 1300343,
-    city: "Kyiv",
-    country: "Ukraine",
-  },
-  {
-    id: 1322343,
-    city: "Kharkiv",
-    country: "Ukraine",
-  },
-  {
-    id: 1320943,
-    city: "Antalya",
-    country: "Turkey",
 
-    id: 1320945,
-    city: "Lviv",
-    country: "Ukraine",
-  },
-];
+let requestLocationArchive = [];
+console.log("test", JSON.parse(localStorage.getItem('requestLocationArchive')));
+// if(JSON.parse(localStorage.getItem('requestLocationArchive'))){
+//   requestLocationArchive = JSON.parse(localStorage.getItem('requestLocationArchive'));
 
-// "http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&date={date}&exclude=hourly,daily&appid=79e9565b6d45f0a48a3ff121a711792c"
+// }
+// localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
 
 // Create array
 let filterArrayCity1 = [];
@@ -55,8 +39,14 @@ let createObject;
 
 let option = document.createElement("li");
 
+
+//get locatiof for input
+
+
+console.log("Get from L:", requestLocationArchive);
+
 // Create array.
-const widgetsDataArray = [];
+const widgetsDataArray = [];  // ???????????????????????????
 
 function searchCity(event) {
   // clear list location
@@ -71,14 +61,14 @@ function searchCity(event) {
     // // filter list city:
     const writingWords = cityInput.value; // event.target from input search city
     const searchWords = writingWords.split(" "); // "Bila Tserkva, Kyivska obl Ukraine"
-    filterArrayCity1 = arrayCity.filter((obj) =>  // місто, країна 
+    filterArrayCity1 = requestLocationArchive.filter((obj) =>  // місто, країна 
       searchWords.every((word) =>
         obj.city.toLowerCase().includes(word.toLowerCase()) 
-        || obj.country.toLowerCase().includes(word.toLowerCase()) 
+        // || obj.country.toLowerCase().includes(word.toLowerCase()) 
       )
     );
 
-    console.log("filterArrayCity length", filterArrayCity1.length); // ok  2obj
+    console.log("filterArrayCity1", filterArrayCity1); // ok  2obj
     //add item to list city
 
     for (let i = 0; i < filterArrayCity1.length; i++) {
@@ -90,12 +80,12 @@ function searchCity(event) {
       selectCityList.appendChild(option); // !
     }
     // show list city
+    console.log('filterArrayCity', filterArrayCity1);
     selectCityList.classList.remove("hidden");
   }
 }
 
 function getSelectListCity(event) {
-  // console.log("select city:", event.target.value);
   const selectedValue = event.target.getAttribute("value");
   cityInput.value = selectedValue;
   selectCityList.classList.add("hidden");
@@ -114,6 +104,14 @@ let maxLimitDate = new Date(minLimitDate);
 maxLimitDate.setDate(maxLimitDate.getDate() + 4);
 maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 
+
+
+// have 
+let curentDate = new Date()
+// let curentTime = curentDate.getHours();
+ let timeZone = curentDate.getTimezoneOffset()
+console.log("timeZone :", timeZone);
+
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
@@ -123,24 +121,70 @@ function selectDate(event) {
 
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
-  valueCheckbox = true;
+  console.log('checkboxSelect.value===',checkboxSelect.checked);
 }
 
+
+
+// get widjets
 function handleSubmit(event) {
   event.preventDefault();
 
-  createObject = {
-    id: new Date().getTime().toString(),
-    city: cityInput.value,
-    dateDay: dataSelect.value,
-    isSave: checkboxSelect.checked, // on => true
-  };
+ 
+//&& !dublicateLocal()
+if( cityInput.value !== ""){
 
-  // (с оригинальными значениями ключей.)
-  widgetsDataArray.push(createObject);
+  createObject = {
+    // id: new Date().getTime().toString(),
+    city: cityInput.value,
+    country: ""
+    // dateDay: dataSelect.value,
+    // isSave: checkboxSelect.checked, // on => true
+  };
+  requestLocationArchive.push(createObject);
+
+      localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
+       console.log('localStorageArrayBefore', requestLocationArchive);
+
+    }else{
+    localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
+
+    }
+  
+
+ 
+
+
+  // location = {
+  //   city: "",
+  //   country: "",
+  //   latitude: "",
+  //   longitude: ""
+  // }
+
+requestLocationArchive = JSON.parse(localStorage.getItem('requestLocationArchive'));
+
+console.log("get from localS:",  getFromLocal); 
+  
+  // push to localStorage:
+  // if (!requestLocationArchive.includes(cityInput.value) || requestLocationArchive !== '') { requestLocationArchive.push(createObject) };
+
+
+
+ console.log("filter",  requestLocationArchive.filter(location => location.city == cityInput.value));
 
   
-  // http://api.openweathermap.org/data/2.5/weather?q=Київ,ua.lat=39.099724&lon=-94.578331&appid=79e9565b6d45f0a48a3ff121a711792c
+
+
+  // localStorageArray.push(createObject);
+  console.log('localStorageObject=', requestLocationArchive);
+
+  console.log('createObject===', createObject);
+  // (с оригинальными значениями ключей.)
+  // widgetsDataArray.push(createObject);
+
+  // 'http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&date={date}&exclude=hourly,daily&appid=79e9565b6d45f0a48a3ff121a711792c'
+  // 'http://api.openweathermap.org/data/2.5/weather?q=Київ,ua.lat=39.099724&lon=-94.578331&appid=79e9565b6d45f0a48a3ff121a711792c'
 
   // fetch(`http://api.openweathermap.org/data/2.5/weather?q=Київ,ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${createObject.city},ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
@@ -148,14 +192,17 @@ function handleSubmit(event) {
      return response.json();
     })
    .then((data) => {
-    console.log(data);
+    console.log("data wiget country short :", data.sys.country);
     console.log('cityInput.value==', createObject.city);
-    
+
+    createObject.city = data.name;
     //document.getElementById('sity').innerHTML = Math.round(data.main.temp - 273) + '&deg;'; 
     let temperatureCurent = Math.round(data.main.temp - 273); // Out-??????????????
     let scoreWind = Math.round(data.wind.speed);
     let curentPressure = Math.round(data.main.pressure / 1.33322);
-
+     let curentHumidity = data.main.humidity;
+     let getCountry = data.sys.country;
+     
     function getDayRenderHtml() {
       const renderHTML = ` 
       <div
@@ -176,7 +223,7 @@ function handleSubmit(event) {
       <section class="container-day__parametrs">
         <span>Wind now</span>
         <span>Pressure</span>
-        <span>Precipitation</span>
+        <span>Humidity</span>
       </section>
     
       <div class="container-day__value-measurement">
@@ -185,16 +232,18 @@ function handleSubmit(event) {
         </div>
         <div>${curentPressure}<span class="container-day__units-measurement">mm</span></div>
         <span
-          >87<span class="container-day__units-measurement">%</span></span
+          >${curentHumidity}<span class="container-day__units-measurement">%</span></span
         >
       </div>
     </div>
     `;
 
-      if (valueCheckbox === true && cityInput.value != "") {
+      if (checkboxSelect.checked === true && cityInput.value != "") {
         widgets.innerHTML += renderHTML
-      } else if (cityInput.value !== "") {
-        widgets.innerHTML = renderHTML
+      } else  if (cityInput.value !== ' ') {
+        
+        
+        widgets.innerHTML = renderHTML; 
       }
     }
      
@@ -217,3 +266,8 @@ console.log(regionNames.of('UA')); // 👉️ "United States"
 // console.log(regionNames.of('GB')); // 👉️ "United kingdom"
 // console.log(regionNames.of('DE')); // 👉️ "Germany"
 // console.log(regionNames.of('AU')); // 👉️ "Australia"
+
+
+const d1 = new Date(1688808906);
+let a = d1.toString(); 
+console.log(a);
