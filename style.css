@@ -84,7 +84,9 @@ body {
  width: 100%;
  z-index: 1; 
 }
-
+.select:hover {
+  cursor: pointer;
+}
 
 
 .hidden{
@@ -247,6 +249,8 @@ figure {
   font-weight: bolder;
   color: var(--color-variable-navigation);
 }
+
+
 .container-day__city-curent,
 .container-night__city-curent,
 .container-cloudiness__city-curent {
@@ -256,7 +260,10 @@ figure {
   font-size: 4rem;
   font-weight: 500;
   color: var(--color-paremetr-city);
+  text-transform: capitalize;
+  font-weight: bolder;
 }
+ 
 .container-day__parametrs,
 .container-night__parametrs,
 .container-cloudiness__parametrs {

@@ -1,12 +1,4 @@
-// API ?
-// fetch methods 
-// async
-// rest method "GET"
-// http & https
-
-// import { showPosition } from "./getlocation.js";
-// console.log("showPosition", showPosition());
-
+import getDate from "./API.js";
 
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
@@ -14,39 +6,45 @@ const cityInput = document.getElementById("city-input");
 const dataSelect = document.getElementById("date-input");
 const checkboxSelect = document.getElementById("checkbox-input");
 const selectCityList = document.getElementById("search-list-city");
-
+let option = document.createElement("li");
+//
 cityInput.addEventListener("input", searchCity);
 selectCityList.addEventListener("click", getSelectListCity);
-dataSelect.addEventListener("change", selectDate);
+dataSelect.addEventListener("click", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
+//
+// Create minLimitDate.
+let minLimitDate = new Date().toISOString().split("T")[0];
+// Create maxLimitDate and interval of date!!!
+let maxLimitDate = new Date(minLimitDate);
+maxLimitDate.setDate(maxLimitDate.getDate() + 4);
+maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 
-
-let requestLocationArchive = [];
-console.log("test", JSON.parse(localStorage.getItem('requestLocationArchive')));
-// if(JSON.parse(localStorage.getItem('requestLocationArchive'))){
-//   requestLocationArchive = JSON.parse(localStorage.getItem('requestLocationArchive'));
-
-// }
-// localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
+// have
+let curentDate = new Date();
+// let curentTime = curentDate.getHours();
+let timeZone = curentDate.getTimezoneOffset();
+console.log("timeZone :", timeZone);
+dataSelect.setAttribute("min", minLimitDate);
+dataSelect.setAttribute("max", maxLimitDate);
 
 // Create array
-let filterArrayCity1 = [];
-
+let filterArrayCity = [];
 // Create obgect.
-let createObject;
-
-
-let option = document.createElement("li");
-
-
-//get locatiof for input
-
-
-console.log("Get from L:", requestLocationArchive);
-
+let createObject = {};
 // Create array.
-const widgetsDataArray = [];  // ???????????????????????????
+const widgetsDataArray = [];
+//
+let requestLocationArchive = [];
+
+requestLocationArchive = JSON.parse(
+  localStorage.getItem("requestLocationArchive")
+);
+console.log("requestLocationArchive-BEFORE=", requestLocationArchive);
+
+requestLocationArchive = [{ city: "Kharkiv", country: "" }]; // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
+//localStorage.setItem('city', 'Kharkiv');
 
 function searchCity(event) {
   // clear list location
@@ -55,65 +53,49 @@ function searchCity(event) {
   // search city by word key
   if (cityInput.value != "") {
     cityInput.value = event.target.value;
-
-    
-
-    // // filter list city:
+    // filter list city:
     const writingWords = cityInput.value; // event.target from input search city
     const searchWords = writingWords.split(" "); // "Bila Tserkva, Kyivska obl Ukraine"
-    filterArrayCity1 = requestLocationArchive.filter((obj) =>  // місто, країна 
-      searchWords.every((word) =>
-        obj.city.toLowerCase().includes(word.toLowerCase()) 
-        // || obj.country.toLowerCase().includes(word.toLowerCase()) 
-      )
+    filterArrayCity = requestLocationArchive.filter(
+      (
+        obj // місто, країна
+      ) =>
+        searchWords.every(
+          (word) => obj.city.toLowerCase().includes(word.toLowerCase())
+          // || obj.country.toLowerCase().includes(word.toLowerCase())
+        )
     );
-
-    console.log("filterArrayCity1", filterArrayCity1); // ok  2obj
+    console.log("filterArrayCity", filterArrayCity);
     //add item to list city
 
-    for (let i = 0; i < filterArrayCity1.length; i++) {
+    for (let i = 0; i < filterArrayCity.length; i++) {
       const option = document.createElement("option");
-      option.setAttribute("value", filterArrayCity1[i].city);
+      option.setAttribute("value", filterArrayCity[i].city);
       option.textContent =
-        filterArrayCity1[i].city + "," + filterArrayCity1[i].country;
-
-      selectCityList.appendChild(option); // !
+        filterArrayCity[i].city + "," + filterArrayCity[i].country;
+      selectCityList.appendChild(option);
     }
     // show list city
-    console.log('filterArrayCity', filterArrayCity1);
-    selectCityList.classList.remove("hidden");
+    // console.log('filterArrayCity', filterArrayCity);
+    if (filterArrayCity.length !== 0 && cityInput.value !== "") {
+      selectCityList.classList.remove("hidden");
+    }
   }
 }
 
 function getSelectListCity(event) {
   const selectedValue = event.target.getAttribute("value");
+  console.log("selectedValue=", selectedValue);
   cityInput.value = selectedValue;
+  // if
   selectCityList.classList.add("hidden");
 
-  filterArrayCity1 = [];
+  filterArrayCity = [];
   // clear selectCityList
   //  selectCityList.appendChild(option);
   // selectCityList.removeChild(option);
-  console.log('cityInput.value=', cityInput.value);
+  console.log("cityInput.value=", cityInput.value);
 }
-
-// Create minLimitDate.
-let minLimitDate = new Date().toISOString().split("T")[0];
-// Create maxLimitDate and interval of date!!!
-let maxLimitDate = new Date(minLimitDate);
-maxLimitDate.setDate(maxLimitDate.getDate() + 4);
-maxLimitDate = maxLimitDate.toISOString().split("T")[0];
-
-
-
-// have 
-let curentDate = new Date()
-// let curentTime = curentDate.getHours();
- let timeZone = curentDate.getTimezoneOffset()
-console.log("timeZone :", timeZone);
-
-dataSelect.setAttribute("min", minLimitDate);
-dataSelect.setAttribute("max", maxLimitDate);
 
 function selectDate(event) {
   dataSelect.value = event.target.value;
@@ -121,90 +103,105 @@ function selectDate(event) {
 
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
-  console.log('checkboxSelect.value===',checkboxSelect.checked);
+  console.log("checkboxSelect.value===", checkboxSelect.checked);
 }
-
-
 
 // get widjets
 function handleSubmit(event) {
   event.preventDefault();
 
- 
-//&& !dublicateLocal()
-if( cityInput.value !== ""){
+  //&& !dublicateLocal()
+  if (cityInput.value !== "") {
 
-  createObject = {
-    // id: new Date().getTime().toString(),
-    city: cityInput.value,
-    country: ""
-    // dateDay: dataSelect.value,
-    // isSave: checkboxSelect.checked, // on => true
-  };
-  requestLocationArchive.push(createObject);
+    createObject = {
+      city: cityInput.value,
+      country: "",
+      // dateDay: dataSelect.value,
+      // isSave: checkboxSelect.checked, // on => true,
+      // id: new Date().getTime().toString()
+    };
 
-      localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
-       console.log('localStorageArrayBefore', requestLocationArchive);
-
-    }else{
-    localStorage.setItem('requestLocationArchive', JSON.stringify(requestLocationArchive));
-
+    if (requestLocationArchive.every((el) => el.city !== createObject.city)) {
+      requestLocationArchive.push(createObject);
     }
-  
+    localStorage.setItem(
+      "requestLocationArchive",
+      JSON.stringify(requestLocationArchive)
+    );
+    console.log("localStorageArrayBefore", requestLocationArchive);
+  } else {
+    localStorage.setItem(
+      "requestLocationArchive",
+      JSON.stringify(requestLocationArchive)
+    );
+  }
 
- 
+  requestLocationArchive = JSON.parse(
+    localStorage.getItem("requestLocationArchive")
+  );
 
+  console.log("get from localStorage:", requestLocationArchive); // getFromLocalStorage
 
-  // location = {
-  //   city: "",
-  //   country: "",
-  //   latitude: "",
-  //   longitude: ""
-  // }
-
-requestLocationArchive = JSON.parse(localStorage.getItem('requestLocationArchive'));
-
-console.log("get from localS:",  getFromLocal); 
-  
-  // push to localStorage:
-  // if (!requestLocationArchive.includes(cityInput.value) || requestLocationArchive !== '') { requestLocationArchive.push(createObject) };
-
-
-
- console.log("filter",  requestLocationArchive.filter(location => location.city == cityInput.value));
-
-  
-
+  console.log(
+    "filter",
+    requestLocationArchive.filter(
+      (location) => location.city == cityInput.value
+    )
+  );
+  let requestLocationArchiveFilter = requestLocationArchive.filter(
+    (location) => location.city == cityInput.value
+  );
 
   // localStorageArray.push(createObject);
-  console.log('localStorageObject=', requestLocationArchive);
+  // console.log("localStorageObject=", requestLocationArchive);
 
-  console.log('createObject===', createObject);
+  // console.log("createObject===", createObject);
   // (с оригинальными значениями ключей.)
   // widgetsDataArray.push(createObject);
 
-  // 'http://api.openweathermap.org/data/2.5/weather?q=Kyiv,ua&date={date}&exclude=hourly,daily&appid=79e9565b6d45f0a48a3ff121a711792c'
-  // 'http://api.openweathermap.org/data/2.5/weather?q=Київ,ua.lat=39.099724&lon=-94.578331&appid=79e9565b6d45f0a48a3ff121a711792c'
+  // console.log("requestLocationArchive.length", requestLocationArchive.length);
 
-  // fetch(`http://api.openweathermap.org/data/2.5/weather?q=Київ,ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
-   fetch(`http://api.openweathermap.org/data/2.5/weather?q=${createObject.city},ua&appid=79e9565b6d45f0a48a3ff121a711792c`)
-  .then((response) => {
-     return response.json();
-    })
-   .then((data) => {
-    console.log("data wiget country short :", data.sys.country);
-    console.log('cityInput.value==', createObject.city);
+  if (requestLocationArchive.length < 2) {
+    createObject.city = "kharkiv";
+    console.log("createObject.city=", createObject.city);
+  }
 
-    createObject.city = data.name;
-    //document.getElementById('sity').innerHTML = Math.round(data.main.temp - 273) + '&deg;'; 
-    let temperatureCurent = Math.round(data.main.temp - 273); // Out-??????????????
+getDate("Kharkiv").then(data => {
+
+    console.log("get data:", data);
+    
+    let temperatureCurent = Math.round(data.main.temp - 273);
     let scoreWind = Math.round(data.wind.speed);
     let curentPressure = Math.round(data.main.pressure / 1.33322);
-     let curentHumidity = data.main.humidity;
-     let getCountry = data.sys.country;
-     
-    function getDayRenderHtml() {
-      const renderHTML = ` 
+    let curentHumidity = data.main.humidity;
+    let getCountry = data.sys.country;
+
+    renderWidget({
+      temperatureCurent,
+      scoreWind,
+      curentPressure,
+      curentHumidity,
+      getCountry,
+    });
+  }
+    );
+
+
+  // clear form
+  cityInput.value = "";
+  dataSelect.value = minLimitDate;
+  checkboxSelect.checked = false;
+  selectCityList.classList.add("hidden");
+}
+
+function renderWidget({
+  temperatureCurent,
+  scoreWind,
+  curentPressure,
+  curentHumidity,
+  getCountry,
+}) {
+  const renderHTML = ` 
       <div
       class="container-day__big-section container-widgets_color-day"
       id="container-day__big-section"
@@ -237,37 +234,9 @@ console.log("get from localS:",  getFromLocal);
       </div>
     </div>
     `;
-
-      if (checkboxSelect.checked === true && cityInput.value != "") {
-        widgets.innerHTML += renderHTML
-      } else  if (cityInput.value !== ' ') {
-        
-        
-        widgets.innerHTML = renderHTML; 
-      }
-    }
-     
-     getDayRenderHtml();
-
-     // clear form
-     cityInput.value = "";
-     dataSelect.value = minLimitDate;
-     checkboxSelect.checked = false;
-   });
+  if (checkboxSelect.checked === true && cityInput.value != "") {
+    widgets.innerHTML += renderHTML;
+  } else if (cityInput.value !== " ") {
+    widgets.innerHTML = renderHTML;
+  }
 }
-
-
-
-const regionNames = new Intl.DisplayNames(
-  ['en'], {type: 'region'}
-);
-
-console.log(regionNames.of('UA')); // 👉️ "United States"
-// console.log(regionNames.of('GB')); // 👉️ "United kingdom"
-// console.log(regionNames.of('DE')); // 👉️ "Germany"
-// console.log(regionNames.of('AU')); // 👉️ "Australia"
-
-
-const d1 = new Date(1688808906);
-let a = d1.toString(); 
-console.log(a);
