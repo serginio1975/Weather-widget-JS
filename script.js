@@ -21,7 +21,7 @@ let maxLimitDate = new Date(minLimitDate);
 maxLimitDate.setDate(maxLimitDate.getDate() + 4);
 maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 
-// have
+//
 let curentDate = new Date();
 // let curentTime = curentDate.getHours();
 let timeZone = curentDate.getTimezoneOffset();
@@ -29,6 +29,7 @@ console.log("timeZone :", timeZone);
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
+let data;
 // Create array
 let filterArrayCity = [];
 // Create obgect.
@@ -38,12 +39,12 @@ const widgetsDataArray = [];
 //
 let requestLocationArchive = [];
 
-requestLocationArchive = JSON.parse(
-  localStorage.getItem("requestLocationArchive")
-);
+// requestLocationArchive = JSON.parse(
+//   localStorage.getItem("requestLocationArchive")
+// );
 console.log("requestLocationArchive-BEFORE=", requestLocationArchive);
 
-requestLocationArchive = [{ city: "Kharkiv", country: "" }]; // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
+// requestLocationArchive = [{ city: "Kharkiv", country: "" }]; // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
 //localStorage.setItem('city', 'Kharkiv');
 
 function searchCity(event) {
@@ -56,15 +57,21 @@ function searchCity(event) {
     // filter list city:
     const writingWords = cityInput.value; // event.target from input search city
     const searchWords = writingWords.split(" "); // "Bila Tserkva, Kyivska obl Ukraine"
-    filterArrayCity = requestLocationArchive.filter(
-      (
-        obj // місто, країна
-      ) =>
-        searchWords.every(
-          (word) => obj.city.toLowerCase().includes(word.toLowerCase())
-          // || obj.country.toLowerCase().includes(word.toLowerCase())
-        )
-    );
+      if (requestLocationArchive.length > 0) {
+        filterArrayCity = requestLocationArchive.filter(
+            (
+              obj // місто, країна
+            ) =>
+              searchWords.every(
+                (word) => obj.city.toLowerCase().includes(word.toLowerCase())
+                // || obj.country.toLowerCase().includes(word.toLowerCase())
+              )
+          );
+    }
+      
+      
+      
+      
     console.log("filterArrayCity", filterArrayCity);
     //add item to list city
 
@@ -108,37 +115,86 @@ function selectCheckbox(event) {
 
 // get widjets
 function handleSubmit(event) {
-  event.preventDefault();
+//   event.preventDefault();
 
   //&& !dublicateLocal()
-  if (cityInput.value !== "") {
+    if (cityInput.value !== "") {
+        let  a = cityInput.value;
 
+   
+
+      
+      
+
+      data = getDate(cityInput.value).then((data) => {
+        
+        console.log('ooooooooo' , a);
+          
     createObject = {
-      city: cityInput.value,
-      country: "",
-      // dateDay: dataSelect.value,
-      // isSave: checkboxSelect.checked, // on => true,
-      // id: new Date().getTime().toString()
-    };
+            city: a,
+            country: "",
+            // dateDay: dataSelect.value,
+            // isSave: checkboxSelect.checked, // on => true,
+            // id: new Date().getTime().toString()
+          };
+          
+        console.log("get data:", data);
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', createObject);
+        if (
+          requestLocationArchive.every(
+            (el) => el.city !== createObject.city  // Умова !!!!!!!!!!!!!!!!!!!!!!!
+          )
+        ) {
+          requestLocationArchive.push(createObject);
+          // (с оригинальными значениями ключей.)
+          localStorage.setItem(
+            "requestLocationArchive",
+            JSON.stringify(requestLocationArchive)
+          );
+            
+          requestLocationArchive = JSON.parse(
+            localStorage.getItem("requestLocationArchive")
+          );
+            
+            
+            
+        }
+      })
+      
+      
+  }
+  
+  
+  
+    else { console.log('lenghtlenghtlenghtlenghtlenght', requestLocationArchive.length);
+        if (
+            requestLocationArchive.every(
+              (el) => el.city !== createObject && requestLocationArchive.length === 0  // Умова !!!!!!!!!!!!!!!!!!!!!!!
+            )
+        ) {
+            requestLocationArchive.push ({ city: "Kharkiv", country: "" }); // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
+            //localStorage.setItem('city', 'Kharkiv');
+            console.log(requestLocationArchive);
+          } else { console.log('111111111111111111111111111');}
+     
 
-    if (requestLocationArchive.every((el) => el.city !== createObject.city)) {
-      requestLocationArchive.push(createObject);
-    }
-    localStorage.setItem(
-      "requestLocationArchive",
-      JSON.stringify(requestLocationArchive)
-    );
-    console.log("localStorageArrayBefore", requestLocationArchive);
-  } else {
-    localStorage.setItem(
-      "requestLocationArchive",
-      JSON.stringify(requestLocationArchive)
-    );
+            localStorage.setItem(
+            "requestLocationArchive",
+        JSON.stringify(requestLocationArchive)
+        );
+        
+    requestLocationArchive = JSON.parse(
+                    localStorage.getItem("requestLocationArchive")
+
+            );
+      
+      
+      
+      
+   
   }
 
-  requestLocationArchive = JSON.parse(
-    localStorage.getItem("requestLocationArchive")
-  );
+ 
 
   console.log("get from localStorage:", requestLocationArchive); // getFromLocalStorage
 
@@ -166,7 +222,7 @@ function handleSubmit(event) {
     console.log("createObject.city=", createObject.city);
   }
 
-getDate("Kharkiv").then(data => {
+getDate(cityInput.value).then(data => {
 
     console.log("get data:", data);
     

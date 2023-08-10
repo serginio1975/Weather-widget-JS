@@ -8,11 +8,22 @@ async function getDate(city) {
           throw new Error("Network response was not ok");
         }
     
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.log("Error:", error.message);
-        throw error;
-      }
-    }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      let test = false; 
+      console.log('test=', test);
+      console.log("Error:", error.message);
+      throw error;
+      // return test;
+  }
+}
 export default getDate;
+
+
+
+
+// data.name = true
+
+
+
