@@ -1,4 +1,6 @@
 import getDate from "./API.js";
+import { showPosition } from "./getlocation.js";
+
 
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
@@ -6,75 +8,53 @@ const cityInput = document.getElementById("city-input");
 const dataSelect = document.getElementById("date-input");
 const checkboxSelect = document.getElementById("checkbox-input");
 const selectCityList = document.getElementById("search-list-city");
-let option = document.createElement("li");
-//
+
 cityInput.addEventListener("input", searchCity);
 selectCityList.addEventListener("click", getSelectListCity);
 dataSelect.addEventListener("click", selectDate);
 checkboxSelect.addEventListener("change", selectCheckbox);
 buttonGetWeather.addEventListener("click", handleSubmit);
-//
-// Create minLimitDate.
+
+let option = document.createElement("li");
 let minLimitDate = new Date().toISOString().split("T")[0];
 // Create maxLimitDate and interval of date!!!
 let maxLimitDate = new Date(minLimitDate);
 maxLimitDate.setDate(maxLimitDate.getDate() + 4);
 maxLimitDate = maxLimitDate.toISOString().split("T")[0];
 
-//
 let curentDate = new Date();
-// let curentTime = curentDate.getHours();
 let timeZone = curentDate.getTimezoneOffset();
-console.log("timeZone :", timeZone);
 dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
+// Variables.
 let data;
-// Create array
 let filterArrayCity = [];
-// Create obgect.
 let createObject = {};
-// Create array.
 const widgetsDataArray = [];
-//
 let requestLocationArchive = [];
-
-// requestLocationArchive = JSON.parse(
-//   localStorage.getItem("requestLocationArchive")
-// );
-console.log("requestLocationArchive-BEFORE=", requestLocationArchive);
-
-// requestLocationArchive = [{ city: "Kharkiv", country: "" }]; // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
-//localStorage.setItem('city', 'Kharkiv');
 
 function searchCity(event) {
   // clear list location
   selectCityList.innerHTML = "";
-
   // search city by word key
   if (cityInput.value != "") {
     cityInput.value = event.target.value;
     // filter list city:
     const writingWords = cityInput.value; // event.target from input search city
     const searchWords = writingWords.split(" "); // "Bila Tserkva, Kyivska obl Ukraine"
-      if (requestLocationArchive.length > 0) {
-        filterArrayCity = requestLocationArchive.filter(
-            (
-              obj // місто, країна
-            ) =>
-              searchWords.every(
-                (word) => obj.city.toLowerCase().includes(word.toLowerCase())
-                // || obj.country.toLowerCase().includes(word.toLowerCase())
-              )
-          );
+    if (requestLocationArchive.length > 0) {
+      filterArrayCity = requestLocationArchive.filter(
+        (
+          obj // місто, країна
+        ) =>
+          searchWords.every((word) =>
+            obj.city.toLowerCase().includes(word.toLowerCase())
+          )
+      );
     }
-      
-      
-      
-      
-    console.log("filterArrayCity", filterArrayCity);
-    //add item to list city
 
+    //add item to list city
     for (let i = 0; i < filterArrayCity.length; i++) {
       const option = document.createElement("option");
       option.setAttribute("value", filterArrayCity[i].city);
@@ -82,32 +62,28 @@ function searchCity(event) {
         filterArrayCity[i].city + "," + filterArrayCity[i].country;
       selectCityList.appendChild(option);
     }
+
     // show list city
-    // console.log('filterArrayCity', filterArrayCity);
     if (filterArrayCity.length !== 0 && cityInput.value !== "") {
       selectCityList.classList.remove("hidden");
     }
   }
-}
+};
 
 function getSelectListCity(event) {
   const selectedValue = event.target.getAttribute("value");
   console.log("selectedValue=", selectedValue);
   cityInput.value = selectedValue;
-  // if
   selectCityList.classList.add("hidden");
 
-  filterArrayCity = [];
-  // clear selectCityList
-  //  selectCityList.appendChild(option);
-  // selectCityList.removeChild(option);
-  console.log("cityInput.value=", cityInput.value);
+  // filterArrayCity = [];
 }
 
 function selectDate(event) {
   dataSelect.value = event.target.value;
 }
 
+// bug???????
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
   console.log("checkboxSelect.value===", checkboxSelect.checked);
@@ -115,117 +91,82 @@ function selectCheckbox(event) {
 
 // get widjets
 function handleSubmit(event) {
-//   event.preventDefault();
+    event.preventDefault();
 
-  //&& !dublicateLocal()
-    if (cityInput.value !== "") {
-        let  a = cityInput.value;
+  if (cityInput.value !== "") {
+    let selectCity = cityInput.value;
 
-   
+    data = getDate(cityInput.value).then((data) => {
+         // //change short name to full name Ex: UA - Uktaine
+      // // find library how get from shortName to fullName
+      // library.filter(region => {
+      //   region.shortName === data.sys.country
+      //   return region.fullName
+      // })
 
-      
-      
 
-      data = getDate(cityInput.value).then((data) => {
-        
-        console.log('ooooooooo' , a);
-          
-    createObject = {
-            city: a,
-            country: "",
-            // dateDay: dataSelect.value,
-            // isSave: checkboxSelect.checked, // on => true,
-            // id: new Date().getTime().toString()
-          };
-          
-        console.log("get data:", data);
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', createObject);
-        if (
-          requestLocationArchive.every(
-            (el) => el.city !== createObject.city  // Умова !!!!!!!!!!!!!!!!!!!!!!!
-          )
-        ) {
-          requestLocationArchive.push(createObject);
-          // (с оригинальными значениями ключей.)
-          localStorage.setItem(
-            "requestLocationArchive",
-            JSON.stringify(requestLocationArchive)
-          );
-            
-          requestLocationArchive = JSON.parse(
-            localStorage.getItem("requestLocationArchive")
-          );
-            
-            
-            
-        }
-      })
-      
-      
-  }
-  
-  
-  
-    else { console.log('lenghtlenghtlenghtlenghtlenght', requestLocationArchive.length);
-        if (
-            requestLocationArchive.every(
-              (el) => el.city !== createObject && requestLocationArchive.length === 0  // Умова !!!!!!!!!!!!!!!!!!!!!!!
-            )
-        ) {
-            requestLocationArchive.push ({ city: "Kharkiv", country: "" }); // Початкова локацiя (input = '') !!! Геолокацiя !!!!!!!!!!!!!!!!!!!
-            //localStorage.setItem('city', 'Kharkiv');
-            console.log(requestLocationArchive);
-          } else { console.log('111111111111111111111111111');}
-     
+      createObject = {
+        city: data.name,
+        country: data.sys.country, // change short name to full name Ex: UA - Uktaine
 
-            localStorage.setItem(
-            "requestLocationArchive",
-        JSON.stringify(requestLocationArchive)
+        // dateDay: dataSelect.value,
+        // isSave: checkboxSelect.checked, // on => true,
+        // id: new Date().getTime().toString()
+      };
+
+      if (requestLocationArchive.every((el) => el.city !== createObject.city)) {
+        requestLocationArchive.push(createObject);
+        localStorage.setItem(
+          "requestLocationArchive",
+          JSON.stringify(requestLocationArchive)
         );
-        
-    requestLocationArchive = JSON.parse(
-                    localStorage.getItem("requestLocationArchive")
-
-            );
-      
-      
-      
-      
+        requestLocationArchive = JSON.parse(
+          localStorage.getItem("requestLocationArchive")
+        );
+      }
+      });
+    } else {
+    showPosition().then(data =>  console.log("get Location ^:", data));
    
-  }
+   
 
- 
+    // if (
+    //   requestLocationArchive.every(
+    //     (el) => el.city !== createObject && requestLocationArchive.length === 0
+    //   )
+    // ) {
+    //   //  get value from getLocation
+    //    showPosition().then(data => console.log("get Location ^:", data));
+    
+    // }
+    
+    localStorage.setItem(
+      "requestLocationArchive",
+      JSON.stringify(requestLocationArchive)
+    );
+    requestLocationArchive = JSON.parse(
+      localStorage.getItem("requestLocationArchive")
+    );
+  }
 
   console.log("get from localStorage:", requestLocationArchive); // getFromLocalStorage
-
   console.log(
     "filter",
     requestLocationArchive.filter(
       (location) => location.city == cityInput.value
     )
   );
+
   let requestLocationArchiveFilter = requestLocationArchive.filter(
-    (location) => location.city == cityInput.value
+    (location) => location.city == cityInput.value // ????????????????????????????????????????????
   );
 
-  // localStorageArray.push(createObject);
-  // console.log("localStorageObject=", requestLocationArchive);
+   if (requestLocationArchive.length < 2) {
+     createObject.city = "kharkiv";
+   console.log("createObject.city=", createObject.city);
+   }
 
-  // console.log("createObject===", createObject);
-  // (с оригинальными значениями ключей.)
-  // widgetsDataArray.push(createObject);
-
-  // console.log("requestLocationArchive.length", requestLocationArchive.length);
-
-  if (requestLocationArchive.length < 2) {
-    createObject.city = "kharkiv";
-    console.log("createObject.city=", createObject.city);
-  }
-
-getDate(cityInput.value).then(data => {
-
-    console.log("get data:", data);
-    
+  getDate(cityInput.value).then((data) => {
     let temperatureCurent = Math.round(data.main.temp - 273);
     let scoreWind = Math.round(data.wind.speed);
     let curentPressure = Math.round(data.main.pressure / 1.33322);
@@ -239,9 +180,7 @@ getDate(cityInput.value).then(data => {
       curentHumidity,
       getCountry,
     });
-  }
-    );
-
+  });
 
   // clear form
   cityInput.value = "";
