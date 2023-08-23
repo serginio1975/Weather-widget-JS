@@ -33,10 +33,9 @@ function getLocalTime(latitude, longitude) {
 
 }
 
-
   // Виклик функції зі значеннями ширини і довготи
   const latitude = 51.5074; // Приклад: Широта міста Лондон
   const longitude = -0.1278; // Приклад: Довгота міста Лондон
-  
+  console.log("time:", getLocalTime(latitude, longitude));  
 
-console.log("time:", getLocalTime(latitude, longitude));  
+  export default getLocalTime;

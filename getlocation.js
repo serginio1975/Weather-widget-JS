@@ -1,4 +1,6 @@
- 
+ import { myLocation } from "./API_requests.js";
+
+
 if (navigator.geolocation) {
   try {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -15,30 +17,23 @@ export async function showPosition() {
    
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
-  console.log("longitude: ", longitude);
+    console.log("longitude: ", longitude);
+    console.log("latitude", latitude);
 
-  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=79e9565b6d45f0a48a3ff121a711792c`)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Weather Data:", data.name);
-    // Your code to use data.name goes here
-  })
-  .catch((error) => {
-    console.log("Error fetching weather data:", error);
-  });
+
+    myLocation(latitude, latitude).then(location => console.log("my location:", location));
 
   });
 
-
-
-// console.log("Your location: " + latitude + ", " + longitude);
   }
- 
 
-  // console.log("latitude + longitude:", latitude, longitude);
-
- 
-}
+// return myLocation;
+ };
 
 
 console.log("sdfsdfgrmgr:", showPosition().then(y => console.log(y)));
+
+
+
+
+

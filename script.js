@@ -1,6 +1,6 @@
-import getDate from "./API.js";
+import { getData } from "./API_requests.js";
 import { showPosition } from "./getlocation.js";
-
+// import getLocalTime from "./getTime.js";
 
 const buttonGetWeather = document.getElementById("controler-submit");
 const widgets = document.getElementById("container-widgets");
@@ -28,7 +28,7 @@ dataSelect.setAttribute("min", minLimitDate);
 dataSelect.setAttribute("max", maxLimitDate);
 
 // Variables.
-let data;
+// let data;?????????????????????????????
 let filterArrayCity = [];
 let createObject = {};
 const widgetsDataArray = [];
@@ -53,7 +53,6 @@ function searchCity(event) {
           )
       );
     }
-
     //add item to list city
     for (let i = 0; i < filterArrayCity.length; i++) {
       const option = document.createElement("option");
@@ -62,56 +61,39 @@ function searchCity(event) {
         filterArrayCity[i].city + "," + filterArrayCity[i].country;
       selectCityList.appendChild(option);
     }
-
     // show list city
     if (filterArrayCity.length !== 0 && cityInput.value !== "") {
       selectCityList.classList.remove("hidden");
     }
   }
 };
-
 function getSelectListCity(event) {
   const selectedValue = event.target.getAttribute("value");
   console.log("selectedValue=", selectedValue);
   cityInput.value = selectedValue;
   selectCityList.classList.add("hidden");
-
-  // filterArrayCity = [];
 }
-
 function selectDate(event) {
   dataSelect.value = event.target.value;
 }
-
-// bug???????
+// bug!!!!!!!!!!!!!!!!!!!!!!!!!!
 function selectCheckbox(event) {
   checkboxSelect.value = event.target.value;
   console.log("checkboxSelect.value===", checkboxSelect.checked);
 }
+
 
 // get widjets
 function handleSubmit(event) {
     event.preventDefault();
 
   if (cityInput.value !== "") {
-    let selectCity = cityInput.value;
-
-    data = getDate(cityInput.value).then((data) => {
-         // //change short name to full name Ex: UA - Uktaine
-      // // find library how get from shortName to fullName
-      // library.filter(region => {
-      //   region.shortName === data.sys.country
-      //   return region.fullName
-      // })
-
+      getData(cityInput.value).then(data => {
+      console.log('open_weather_map_data', data);
 
       createObject = {
-        city: data.name,
-        country: data.sys.country, // change short name to full name Ex: UA - Uktaine
-
-        // dateDay: dataSelect.value,
-        // isSave: checkboxSelect.checked, // on => true,
-        // id: new Date().getTime().toString()
+      city: data.name,
+      country: data.sys.country,
       };
 
       if (requestLocationArchive.every((el) => el.city !== createObject.city)) {
@@ -126,20 +108,9 @@ function handleSubmit(event) {
       }
       });
     } else {
-    showPosition().then(data =>  console.log("get Location ^:", data));
+    showPosition().then(data => console.log("get Location default:", data));
    
    
-
-    // if (
-    //   requestLocationArchive.every(
-    //     (el) => el.city !== createObject && requestLocationArchive.length === 0
-    //   )
-    // ) {
-    //   //  get value from getLocation
-    //    showPosition().then(data => console.log("get Location ^:", data));
-    
-    // }
-    
     localStorage.setItem(
       "requestLocationArchive",
       JSON.stringify(requestLocationArchive)
@@ -149,24 +120,13 @@ function handleSubmit(event) {
     );
   }
 
-  console.log("get from localStorage:", requestLocationArchive); // getFromLocalStorage
-  console.log(
-    "filter",
-    requestLocationArchive.filter(
-      (location) => location.city == cityInput.value
-    )
-  );
+   console.log("get from localStorage:", requestLocationArchive); // getFromLocalStorage
 
-  let requestLocationArchiveFilter = requestLocationArchive.filter(
-    (location) => location.city == cityInput.value // ????????????????????????????????????????????
-  );
-
-   if (requestLocationArchive.length < 2) {
-     createObject.city = "kharkiv";
-   console.log("createObject.city=", createObject.city);
+   if (requestLocationArchive.length < 1) {
+     createObject.city = "kharkiv"; // ?????????????????
    }
 
-  getDate(cityInput.value).then((data) => {
+  getData(cityInput.value).then((data) => {
     let temperatureCurent = Math.round(data.main.temp - 273);
     let scoreWind = Math.round(data.wind.speed);
     let curentPressure = Math.round(data.main.pressure / 1.33322);
@@ -182,11 +142,7 @@ function handleSubmit(event) {
     });
   });
 
-  // clear form
-  cityInput.value = "";
-  dataSelect.value = minLimitDate;
-  checkboxSelect.checked = false;
-  selectCityList.classList.add("hidden");
+  
 }
 
 function renderWidget({
@@ -234,4 +190,10 @@ function renderWidget({
   } else if (cityInput.value !== " ") {
     widgets.innerHTML = renderHTML;
   }
+
+// clear form
+cityInput.value = "";
+dataSelect.value = minLimitDate;
+checkboxSelect.checked = false;
+selectCityList.classList.add("hidden");
 }
