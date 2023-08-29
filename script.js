@@ -1,5 +1,6 @@
 import { getData } from "./API_requests.js";
 import { showPosition } from "./getlocation.js";
+import { myLocation } from "./API_requests.js";
 // import getLocalTime from "./getTime.js";
 
 const buttonGetWeather = document.getElementById("controler-submit");
@@ -108,7 +109,7 @@ function handleSubmit(event) {
       }
       });
     } else {
-    showPosition().then(data => console.log("get Location default:", data));
+    myLocation().then(data => console.log("get Location default:", data));
    
    
     localStorage.setItem(

@@ -14,14 +14,14 @@ if (navigator.geolocation) {
 export async function showPosition() {
   if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition((position) => {
-   
+   console.log(position);
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
     console.log("longitude: ", longitude);
     console.log("latitude", latitude);
 
 
-    myLocation(latitude, latitude).then(location => console.log("my location:", location));
+    myLocation(latitude, longitude).then(location => console.log("my location:", location));
 
   });
 
